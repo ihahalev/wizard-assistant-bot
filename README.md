@@ -56,3 +56,8 @@ pip install -e .
 ```
 
 And it become available as `remembrall` programm.
+
+Or can be launched as
+```bash
+python src/remembrall/__main__.py
+```
