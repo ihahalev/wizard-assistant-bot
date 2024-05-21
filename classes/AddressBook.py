@@ -18,7 +18,9 @@ class AddressBook(UserDict):
         next_week = today + timedelta(days=6)
         greatings = []
         for rec in self.data.values():
-            birth_date = rec.birthday.value
+            birth_date = rec.birthday.value if rec.birthday else None
+            if not birth_date:
+                continue
             birthday_this_year = datetime(year=today.year, month=birth_date.month, day=birth_date.day).date()
             if (birthday_this_year < today or birthday_this_year > next_week):
                 continue
