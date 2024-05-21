@@ -19,11 +19,11 @@ def input_error(func):
                 # depending on N return corresponding message
                 if count == '0':
                     if is_birthday:
-                        return "Give me name and bithday please."
+                        return "Give me name and birthday please."
                     return "Give me name and phone please."
                 elif count == '1':
                     if is_birthday:
-                        return "Give me bithday please."
+                        return "Give me birthday please."
                     return "Give me phone please."
                 elif count == '2':
                     return "Give me new phone please."
