@@ -1,7 +1,5 @@
 import re
 from datetime import datetime
-
-# how to solve ModuleNotFoundError: No module named 'helpers' ?
 from helpers.constants import format
 from .customErrors import ShortName, PhoneValidationError, DateFormatError
 from helpers.json_converter import to_json
