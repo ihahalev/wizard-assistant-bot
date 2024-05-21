@@ -1,4 +1,4 @@
-from classes import Name, Phone, Birthday
+from classes import Name, Phone, Birthday, Address
 from .customErrors import PhoneValidationError
 from helpers.wrappers import input_error
 from helpers.json_converter import to_json
@@ -8,12 +8,14 @@ class Record:
         self.name = Name(name)
         self.phones: list[Phone] = []
         self.birthday = None
+        self.address = None
 
     def __str__(self):
         name = f"name: {self.name.value}"
         phones = f"phones: {'; '.join(p.value for p in self.phones if p.value)}"
         birthday = f"birthday: {self.birthday if self.birthday else ''}"
-        return f"Contact {name}, {phones}, {birthday}"
+        address = f"address: {self.address if self.address else ''}"
+        return f"Contact {name}, {phones}, {birthday}, {address}"
 
     @input_error
     def add_phone(self, phone_number: str):
@@ -35,6 +37,29 @@ class Record:
         if not self.birthday:
             self.birthday = Birthday(birthday)
 
+    def add_address(self, address):
+        if self.address:
+            return "Address already exists."
+        if address:
+            Address.check_address(address)
+            self.address = Address(address)
+        return "Address added"
+
+    def edit_address(self, new_address):
+        if new_address:
+            Address.check_address(new_address)
+            if isinstance(self.address, Address):
+                self.address.edit_address(new_address)
+                return "Address updated"
+            else:
+                return "No address to edit."
+    
+    def delete_address(self):
+        if isinstance(self.address, Address):
+            self.address = None
+            return "Address deleted"
+        return "No address to delete."
+        
     def __getstate__(self):
         attributes = self.__dict__
         return attributes

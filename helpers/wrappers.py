@@ -1,10 +1,12 @@
 import re
-from classes.customErrors import ShortName, PhoneValidationError, DateFormatError
+from classes.customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
 
 def input_error(func):
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except AddressValidationError as ave:
+            return ave.args[0]
         except ValueError as ve:
             # get error message
             msg: str = ve.args[0]

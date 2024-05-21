@@ -77,3 +77,28 @@ def get_birthdays(book: AddressBook) -> str:
     for record in birthdays:
         output += f"\n{record}"
     return output
+
+@input_error
+def add_address(args: list, book: AddressBook) -> str:
+    name, address = args
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    return found.add_address(address) 
+
+@input_error
+def edit_address(args: list, book: AddressBook) -> str:
+    name, address = args
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    return found.edit_address(address)
+
+@input_error
+def delete_address(args: list, book: AddressBook) -> str:
+    name = args[0]
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    return found.delete_address()
+
