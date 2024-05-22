@@ -72,3 +72,6 @@ class Birthday(Field):
 
     def __str__(self):
         return datetime.strftime(self.value, format)
+    
+class Email(Field):
+    pass
