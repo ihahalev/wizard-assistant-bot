@@ -74,14 +74,17 @@ class Birthday(Field):
         return datetime.strftime(self.value, format)
     
 class Address(Field):
-    def __init__(self, value: str):
+    def __init__(self, value: str, existing_address=None):
+        if existing_address is not None:
+            raise ValueError("Address already exists.")
+        Address.check_address(value.strip())
         self.value = value.strip()
 
     def edit_address(self, new_address: str):
-        Address.check_address(new_address)
+        Address.check_address(new_address.strip())
         self.value = new_address.strip()
 
     @staticmethod
     def check_address(address: str):
         if len(address) < 2 or len(address) > 100:
-            raise AddressValidationError("Address should be at least 2 chars and not more than 100 chars")
+            raise AddressValidationError("Address should be at least 2 chars and not more than 100 chars.")

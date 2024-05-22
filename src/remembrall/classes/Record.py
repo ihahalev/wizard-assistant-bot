@@ -38,26 +38,26 @@ class Record:
             self.birthday = Birthday(birthday)
 
     def add_address(self, address):
-        if self.address:
-            return "Address already exists."
         if address:
-            Address.check_address(address)
-            self.address = Address(address)
-        return "Address added"
+            try:
+                self.address = Address(address, existing_address=self.address)
+                return "Address added."
+            except ValueError as adderr:
+                return str(adderr)
 
     def edit_address(self, new_address):
         if new_address:
             Address.check_address(new_address)
             if isinstance(self.address, Address):
                 self.address.edit_address(new_address)
-                return "Address updated"
+                return "Address updated."
             else:
                 return "No address to edit."
     
     def delete_address(self):
-        if isinstance(self.address, Address):
+        if self.address:
             self.address = None
-            return "Address deleted"
+            return "Address deleted."
         return "No address to delete."
         
     def __getstate__(self):

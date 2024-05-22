@@ -6,7 +6,7 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except AddressValidationError as ave:
-            return ave.args[0]
+            return f"{ave}"
         except ValueError as ve:
             # get error message
             msg: str = ve.args[0]
@@ -15,6 +15,7 @@ def input_error(func):
             got = re.search(pattern, msg)
             if got:
                 is_birthday = func.__name__ == "add_birthday"
+                is_address = func.__name__ == "edit_address" or func.__name__ == "add_address"
                 count = got.group(1)
                 # depending on N return corresponding message
                 if count == '0':
@@ -24,18 +25,20 @@ def input_error(func):
                 elif count == '1':
                     if is_birthday:
                         return "Give me birthday please."
+                    if is_address:
+                        return "Give me address please."
                     return "Give me phone please."
                 elif count == '2':
                     return "Give me new phone please."
             # if we have only expected, too many entered args
             elif msg.find("expected") != -1:
-                return "Too many arguments"
+                return "Too many arguments."
             # any other unexpected ValueError
             return f"{func.__name__} error, {type(ve)}, {ve}"
         except KeyError:
-            return "Contact does not exist"
+            return "Contact does not exist."
         except IndexError:
-            return "Enter user name"
+            return "Enter user name."
         except ShortName as name:
             return f"{name}"
         except PhoneValidationError as phone:
@@ -51,7 +54,7 @@ def file_read_error(func):
         try:
             return func(*args, **kwargs)
         except FileNotFoundError as error:
-            print(f"File {error.filename} not found")
+            print(f"File {error.filename} not found.")
         except Exception as error:
             print(f"File could not be read, {type(error)}, {error}")
     return inner

@@ -21,9 +21,6 @@ from helpers.data_upload import load_data, save_data
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
-    if cmd == 'add-address' or 'edit-address' in cmd:
-        name, address = ' '.join(args).split(' ', 1)
-        return cmd, name, address
     return cmd, *args
 
 def main(test_users = None):
@@ -67,9 +64,9 @@ def main(test_users = None):
                 print(book_operations.get_birthdays(book))
             case "add-address":
                 print(book_operations.add_address(args, book))
-            case "edit-address":
+            case "change-address":
                 print(book_operations.edit_address(args, book))
-            case "delete-address":
+            case "remove-address":
                 print(book_operations.delete_address(args, book))
             case _:
                 print("Invalid command.")
