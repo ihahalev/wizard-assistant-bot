@@ -1,3 +1,19 @@
+"""Assistant bot for wizards of the academy.
+
+Usage:
+--------
+
+    $ remembrall [command] [args1, args2, ...]
+
+List the avaialble commands:
+
+    $ remembrall help
+
+Version:
+--------
+
+- wizards-remembrall v1.0.0
+"""
 import sys
 from classes import Record
 from helpers import book_operations

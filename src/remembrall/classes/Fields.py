@@ -20,7 +20,7 @@ class Field:
 
     def to_json(self):
         return to_json(self.__dict__)
-    
+
     def from_json(self, state):
         self.__dict__ = state
 
