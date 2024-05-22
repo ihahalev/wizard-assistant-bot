@@ -1,10 +1,10 @@
 import datetime
-import pickle
 from collections import UserDict
+from remembrall.classes.customErrors import NoteError
 
 
 class Note:
-    def __init__(self, title, content):
+    def __init__(self, title: str, content: str):
         self.title = title
         self.content = content
         self.tags = list()
@@ -20,57 +20,45 @@ class Note:
         else:
             raise NameError
 
-    def searchstring(self):
-        tags_line = ' '.join(self.tags) if self.tags else ""
-        return (self.content + " " + tags_line).lower()
-    
-    def search_tag(self):
+    def get_tags_as_str(self) -> str:
         return ' '.join(self.tags).lower() if self.tags else ""
-    
-    def __str__(self):
-        return f"Title: {self.title:^3}. DATE: {self.creation_date.strftime('%d.%m.%Y %H:%M')}. NOTE: {self.content} [Tags: {', '.join(self.tags)}]"
+
+    def __str__(self) -> str:
+        return f"Title: {self.title:^2}| Tags: {', '.join(self.tags):>20} | {self.content:<70}"
 
 
 class NoteBook(UserDict):
-    def __init__(self):
-        self.data = UserDict()
-
-    def add_record(self, note):
+    def add_note(self, note: Note):
+        if self.find_note(note.title):
+            raise NoteError("This title exists")
         self.data[note.title] = note
         
+    def edit_note(self, title: str, new_context: str):
+        found = self.find_note(title)
+        if not found:
+            raise NoteError("This title doesn't exist")
+        self.data[title].content = new_context
 
-    def read_from_file(self):
-        with open('data\\nbook.dat', 'rb') as fh:
-            return pickle.load(fh)
-        
-    def save_to_file(self):
-        with open('data\\nbook.dat', 'wb') as fh:
-            pickle.dump(self, fh)
+    def remove_note(self, title: str):
+        if not self.find_note(title):
+            raise NoteError("This title doesn't exist")
+        self.data.pop(title)
 
-    def edit_record(self, args):
-        self.data[args[0]].content = (' '.join(args[1:]))
+    def change_title(self, title: str, new_title: str):
+        found = self.find_note(title)
+        if not found:
+            raise NoteError("This title doesn't exist")
+        found.title = new_title
+        self.remove_note(title)
+        self.add_note(found)
 
-    def del_note(self, args):
-        self.data.pop(args[0])
+    def find_note(self, title: str) -> Note:
+        return self.data.get(title)
 
+    def find_with_context(self, search_str: str) -> list[Note]:
+        notes = self.data.values()
+        return [note for n in notes if search_str.lower() in n.content.lower()]
 
-nbook = NoteBook()
-note = Note("Бред", "много текста ни о чем")
-nbook.add_record(note)
-print(note)
-if "много текста ни о чем" in note.searchstring():
-    print("Рядок знайдено.")
-else:
-    print("Рядок не знайдено.")
-
-note.add_tag("маразм близко")
-
-print(note)
-
-if "маразм близко" in note.search_tag():
-    print("Тег знайдено.")
-else:
-    print("Тег не знайдено.")
-
-note.remove_tag("маразм близко")
-print(note)
+    def find_with_tag(self, search_tag: str) -> list[Note]:
+        notes = self.data.values()
+        return [note for n in notes if search_tag.lower() in n.get_tags_as_str()]
