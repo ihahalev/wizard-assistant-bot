@@ -38,7 +38,11 @@ def input_error(func):
         except KeyError:
             return "Contact does not exist."
         except IndexError:
-            return "Enter user name."
+            if func.__name__ in ['add_address', 'edit_address']:
+                if len(args[0]) == 0:
+                    return "Please give me name and address."
+            else:
+                return "Enter user name."
         except ShortName as name:
             return f"{name}"
         except PhoneValidationError as phone:

@@ -86,6 +86,8 @@ def add_address(args: list, book: AddressBook) -> str:
     If address is already present, return "Address already exists."
     If address is added, return "Address added."
     '''
+    if len(args) < 1:
+        raise IndexError()
     name, address = ' '.join(args).split(' ', 1)
     if not address:
         raise ValueError()
@@ -100,6 +102,8 @@ def edit_address(args: list, book: AddressBook) -> str:
     If address is not present, return "No address to edit."
     If address is edited, return "Address updated."
     '''
+    if len(args) < 1:
+        raise IndexError()
     name, address = ' '.join(args).split(' ', 1)
     if not address:
         raise ValueError()
