@@ -28,7 +28,7 @@ class Note:
         return ' '.join(self.tags).lower() if self.tags else ""
     
     def __str__(self):
-         return f"Title: {self.title:^3}. DATE: {self.creation_date.strftime('%d.%m.%Y %H:%M')}. NOTE: {self.content} [Tags: {', '.join(self.tags)}]"
+        return f"Title: {self.title:^3}. DATE: {self.creation_date.strftime('%d.%m.%Y %H:%M')}. NOTE: {self.content} [Tags: {', '.join(self.tags)}]"
 
 
 class NoteBook(UserDict):

@@ -73,6 +73,8 @@ def get_birthdays(book: AddressBook) -> str:
     if not len(book):
         return "Address book is empty"
     birthdays = book.get_upcoming_birthdays()
+    if not birthdays:
+        return "No upcoming birthdays"
     output = "Upcoming birthdays:"
     for record in birthdays:
         output += f"\n{record}"
