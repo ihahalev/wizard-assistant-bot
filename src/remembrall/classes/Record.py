@@ -31,6 +31,9 @@ class Record:
         valid_email = Email(user_email)
         self.emails.append(valid_email)
 
+    def remove_email(self, rem_email):
+        self.emails = [e for e in self.emails if e.value != rem_email]
+
     def find_phone(self, phone_number:str) -> Phone:
         for phone in self.phones:
             if phone.value == phone_number:
