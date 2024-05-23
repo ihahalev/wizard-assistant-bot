@@ -1,5 +1,6 @@
-from .Fields import Name, Phone, Birthday, Address
-from .customErrors import PhoneValidationError
+from .Fields import Name, Phone, Birthday
+
+from ..helpers.customErrors import PhoneValidationError
 from ..helpers.wrappers import input_error
 from ..helpers.json_converter import to_json
 

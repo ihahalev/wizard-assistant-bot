@@ -1,6 +1,6 @@
 import re
 
-from ..classes.customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
+from .customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
 
 def input_error(func):
     def inner(*args, **kwargs):
