@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from helpers.constants import format
-from .customErrors import ShortName, PhoneValidationError, DateFormatError
+from .customErrors import ShortName, PhoneValidationError, DateFormatError, EmailFormatError
 from helpers.json_converter import to_json
 
 class Field:
@@ -74,4 +74,18 @@ class Birthday(Field):
         return datetime.strftime(self.value, format)
     
 class Email(Field):
-    pass
+    def __init__(self, email: str):
+
+        self.validation(email)
+
+        super().__init__(email)
+
+    def validation(self, value):
+        pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+        search_email = re.search(pattern, value)
+
+        if search_email:
+            return search_email.group()
+        else:
+            # print("Invalid Email")
+            raise EmailFormatError("The email address is not valid.")
