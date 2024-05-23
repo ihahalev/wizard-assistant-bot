@@ -1,5 +1,6 @@
 import re
-from classes.customErrors import ShortName, PhoneValidationError, DateFormatError
+
+from .customErrors import ShortName, PhoneValidationError, DateFormatError
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -53,4 +54,3 @@ def file_read_error(func):
         except Exception as error:
             print(f"File could not be read, {type(error)}, {error}")
     return inner
-

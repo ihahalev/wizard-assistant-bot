@@ -1,5 +1,5 @@
 from .wrappers import input_error
-from classes import AddressBook, Record
+from ..classes import AddressBook, Record
 
 @input_error
 def add_contact(args, book: AddressBook):
@@ -31,7 +31,7 @@ def change_contact(args: list, book: AddressBook) -> str:
 
 @input_error
 def remove_contact(args: list, book: AddressBook) -> str:
-    name = args
+    name = args[0]
     found = book.find(name)
     if not found:
         return "Contact not found."
@@ -115,3 +115,92 @@ def get_birthdays(args: list, book: AddressBook) -> str:
     for record in birthdays:
         output += f"\n{record}"
     return output
+
+@input_error
+def add_email(args: list, book: AddressBook) -> str:
+    name, email = args
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    # TODO: Add email to record
+    return "Email added"
+
+@input_error
+def change_email(args: list, book: AddressBook) -> str:
+    name, input, new_email = args
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    # TODO: Change email in record
+    return "Email changed"
+
+@input_error
+def add_address(args: list, book: AddressBook) -> str:
+    name, address = args
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    # TODO: Add address to record
+    return "Address added"
+
+@input_error
+def change_address(args: list, book: AddressBook) -> str:
+    name, input, new_address = args
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    # TODO: Change address in record
+    return "Address changed"
+
+@input_error
+def get_all_notes(book: AddressBook) -> str:
+    # TODO: Get all notes from book
+    return ["Note 1"]
+
+@input_error
+def add_note(args: list, book: AddressBook) -> str:
+    title, text = args
+    # TODO: Add note to book
+    return "Note added"
+
+@input_error
+def show_note(args: list, book: AddressBook) -> str:
+    title = args
+    # TODO: Show note (found by title) from book
+    return "Note"
+
+@input_error
+def change_note(args: list, book: AddressBook) -> str:
+    title, text = args
+    # TODO: Change note in book
+    return "Note changed"
+
+@input_error
+def remove_note(args: list, book: AddressBook) -> str:
+    title = args
+    # TODO: Remove note from book
+    return "Note removed"
+
+@input_error
+def change_note_title(args: list, book: AddressBook) -> str:
+    title, new_title = args
+    # TODO: Change note title in book
+    return "Note title changed"
+
+@input_error
+def add_note_tag(args: list, book: AddressBook) -> str:
+    title, tag = args
+    # TODO: Add tag to note
+    return "Tag added"
+
+@input_error
+def change_note_tag(args: list, book: AddressBook) -> str:
+    title, tag, new_tag = args
+    # TODO: Change tag in note
+    return "Tag changed"
+
+@input_error
+def remove_note_tag(args: list, book: AddressBook) -> str:
+    title, tag = args
+    # TODO: Remove tag from note
+    return "Tag removed"

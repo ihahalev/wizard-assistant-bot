@@ -1,8 +1,9 @@
 from collections import UserDict
-from .Record import Record
 from datetime import datetime, timedelta
-from helpers.constants import format
-from helpers.json_converter import to_json
+
+from .Record import Record
+from ..helpers.constants import format
+from ..helpers.json_converter import to_json
 
 class AddressBook(UserDict):
     def add_record(self, rec:Record):
