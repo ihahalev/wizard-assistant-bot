@@ -29,14 +29,18 @@ class AddressBook(UserDict):
 
         for rec in self.data.values():
             birth_date = rec.birthday.value if rec.birthday else None
-            last_birthday_to_data = datetime(year=(today+timedelta(days=depth_days+7)).year, month=birth_date.month, day=birth_date.day).date()
-            if (-1 + depth_days) <= (last_birthday_to_data - today).days < (6 + depth_days):
-                match last_birthday_to_data.weekday():
+            t = today+timedelta(days=depth_days)
+            print(t)
+            b_day_current_year = datetime(year=(today+timedelta(days=depth_days)).year, month=birth_date.month, day=birth_date.day).date()
+            b_day_current_year_pl7 = datetime(year=(today+timedelta(days=depth_days+7)).year, month=birth_date.month, day=birth_date.day).date()
+            print(b_day_current_year_pl7 - b_day_current_year)
+            if (-1 + depth_days) <= (b_day_current_year - today).days < (6 + depth_days):
+                match b_day_current_year.weekday():
                     case 5:
-                        last_birthday_to_data = last_birthday_to_data + timedelta(days=2)
+                        b_day_current_year = b_day_current_year + timedelta(days=2)
                     case 6:
-                        last_birthday_to_data = last_birthday_to_data + timedelta(days=1)        
-                b_users.append({"name": rec.name.value, "congratulation_date": last_birthday_to_data.strftime(format)})
+                        b_day_current_year = b_day_current_year + timedelta(days=1)        
+                b_users.append({"name": rec.name.value, "congratulation_date": b_day_current_year.strftime(format)})
         return b_users
 
     def __getstate__(self):
