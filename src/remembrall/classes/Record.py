@@ -18,6 +18,9 @@ class Record:
 
         return f"Contact {name}, {phones}, {birthday}, {emails}"
 
+    def edit_name(self, name:str):
+        self.name.edit_name(name)
+
     @input_error
     def add_phone(self, phone_number: str):
         if not [phone for phone in self.phones if phone.value == phone_number]:
@@ -49,6 +52,10 @@ class Record:
         if not found_phone:
             raise PhoneValidationError("Phone number not found")
         found_phone.edit_phone(new_phone)
+        
+    def remove_phone(self, phone):
+        found_phone = self.find_phone(phone)
+        self.phones.remove(found_phone)
 
     def edit_email(self, find_e: str, replace_e: str):
         email = self.find_email(find_e)
@@ -60,6 +67,12 @@ class Record:
     def add_birthday(self, birthday):
         if not self.birthday:
             self.birthday = Birthday(birthday)
+
+    def edit_birthday(self, birthday:str):
+        if not self.birthday:
+            self.birthday = Birthday(birthday)
+        else:
+            self.birthday.edit_birthday(birthday)
 
     def __getstate__(self):
         attributes = self.__dict__
