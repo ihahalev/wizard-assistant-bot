@@ -18,7 +18,7 @@ class Note:
         if tag in self.tags:
             self.tags.remove(tag)
         else:
-            raise NoteError
+            raise NoteError ('No Tag to remove')
 
     def get_tags_as_str(self) -> str:
         return ' '.join(self.tags).lower() if self.tags else ""
