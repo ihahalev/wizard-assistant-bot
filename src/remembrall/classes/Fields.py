@@ -91,5 +91,4 @@ class Email(Field):
         if search_email:
             return search_email.group()
         else:
-            # print("Invalid Email")
             raise EmailFormatError("The email address is not valid.")
