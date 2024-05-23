@@ -1,4 +1,4 @@
-from .Fields import Name, Phone, Birthday
+from .Fields import Name, Phone, Birthday, Address
 
 from ..helpers.customErrors import PhoneValidationError
 from ..helpers.wrappers import input_error
