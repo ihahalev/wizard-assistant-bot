@@ -24,26 +24,19 @@ class AddressBook(UserDict):
         del self.data[name]
 
     def get_upcoming_birthdays(self, depth_days:int) -> list[dict]:
-        today = datetime.today()
+        today = datetime.today().date()
         b_users = []
 
-        for name, user in self.data.items():
-            user_year = str(user.birthday.value.year)
-            year_now = str((today+timedelta(days=depth_days+7)).year)
-            user_data = str(user.birthday.value)
-            # birthday_this_year = datetime(year=today.year, month=birth_date.month, day=birth_date.day).date()
-
-            last_birthday = re.sub(user_year, year_now, user_data)
-            last_birthday_to_data = datetime.strptime(last_birthday, format)
+        for rec in self.data.values():
+            birth_date = rec.birthday.value if rec.birthday else None
+            last_birthday_to_data = datetime(year=(today+timedelta(days=depth_days+7)).year, month=birth_date.month, day=birth_date.day).date()
             if (-1 + depth_days) <= (last_birthday_to_data - today).days < (6 + depth_days):
-
                 match last_birthday_to_data.weekday():
                     case 5:
                         last_birthday_to_data = last_birthday_to_data + timedelta(days=2)
                     case 6:
-                        last_birthday_to_data = last_birthday_to_data + timedelta(days=1)
-        
-                b_users.append({"name": user.name.value, "congratulation_date": last_birthday_to_data.strftime(format)})
+                        last_birthday_to_data = last_birthday_to_data + timedelta(days=1)        
+                b_users.append({"name": rec.name.value, "congratulation_date": last_birthday_to_data.strftime(format)})
         return b_users
 
     def __getstate__(self):
