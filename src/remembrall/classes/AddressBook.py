@@ -12,11 +12,22 @@ class AddressBook(UserDict):
     def find(self, name:str) -> Record:
         return self.data.get(name)
 
-    def get_upcoming_birthdays(self) -> list[dict]:
+    def change_name(self, name:str, new_name:str):
+        found = self.find(name)
+        if not found:
+            return "Contact not found."
+        found.edit_name(new_name)
+        self.remove_record(name)
+        self.add_record(found)
+
+    def remove_record(self, name:str):
+        del self.data[name]
+
+    def get_upcoming_birthdays(self, depth_days:int) -> list[dict]:
         today = datetime.today().date()
         # for test
         # today = datetime.strptime("22.01.2024", format).date()
-        next_week = today + timedelta(days=6)
+        next_week = today + timedelta(days=depth_days)
         greatings = []
         for rec in self.data.values():
             birth_date = rec.birthday.value if rec.birthday else None

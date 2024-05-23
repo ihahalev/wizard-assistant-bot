@@ -73,3 +73,6 @@ class Birthday(Field):
 
     def __str__(self):
         return datetime.strftime(self.value, format)
+
+    def edit_birthday(self, value:str):
+        self.__init__(value)
