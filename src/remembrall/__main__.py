@@ -80,40 +80,43 @@ def main(test_users = None):
                 print(book_operations.get_birthdays(args, book))
             case "add-email":
                 # add contact email
-                pass
+                print(book_operations.add_email(args, book))
             case "change-email":
                 # change contact email
-                pass
+                print(book_operations.change_email(args, book))
             case "add-address":
                 # add contact address
-                pass
+                print(book_operations.add_address(args, book))
             case "change-address":
                 # change contact address
-                pass
+                print(book_operations.change_address(args, book))
+            case "all-notes":
+                # show all notes
+                print(book_operations.get_all_notes(book))
             case "add-note":
                 # add note with title and text
-                pass
+                print(book_operations.add_note(args, book))
             case "show-note":
                 # show note with all info
-                pass
+                print(book_operations.show_note(args, book))
             case "change-note":
                 # change note text
-                pass
+                print(book_operations.change_note(args, book))
             case "remove-note":
                 # remove note
-                pass
+                print(book_operations.remove_note(args, book))
             case "change-title":
                 # change note title
-                pass
+                print(book_operations.change_note_title(args, book))
             case "add-tag":
                 # add note tag
-                pass
+                print(book_operations.add_note_tag(args, book))
             case "change-tag":
                 # change note tag
-                pass
+                print(book_operations.change_note_tag(args, book))
             case "remove-tag":
                 # remove note tag
-                pass
+                print(book_operations.remove_note_tag(args, book))
             case _:
                 print("Invalid command.")
 
