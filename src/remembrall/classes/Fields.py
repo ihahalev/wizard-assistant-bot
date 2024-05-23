@@ -88,3 +88,6 @@ class Address(Field):
     def check_address(address: str):
         if len(address) < 2 or len(address) > 100:
             raise AddressValidationError("Address should be at least 2 chars and not more than 100 chars.")
+
+    def edit_birthday(self, value:str):
+        self.__init__(value)
