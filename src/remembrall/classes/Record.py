@@ -1,4 +1,4 @@
-from .Fields import Name, Phone, Birthday
+from .Fields import Name, Phone, Birthday, Address
 
 from ..helpers.customErrors import PhoneValidationError
 from ..helpers.wrappers import input_error
@@ -9,12 +9,14 @@ class Record:
         self.name = Name(name)
         self.phones: list[Phone] = []
         self.birthday = None
+        self.address = None
 
     def __str__(self):
         name = f"name: {self.name.value}"
         phones = f"phones: {'; '.join(p.value for p in self.phones if p.value)}"
         birthday = f"birthday: {self.birthday if self.birthday else ''}"
-        return f"Contact {name}, {phones}, {birthday}"
+        address = f"address: {self.address if self.address else ''}"
+        return f"Contact {name}, {phones}, {birthday}, {address}"
 
     def edit_name(self, name:str):
         self.name.edit_name(name)
@@ -49,6 +51,18 @@ class Record:
         else:
             self.birthday.edit_birthday(birthday)
 
+    def add_address(self, address):
+        if not self.address:
+            self.address = Address(address)
+
+    def change_address(self, new_address):
+        if self.address:
+            self.address.change_address(new_address)
+    
+    def remove_address(self):
+        if self.address:
+            self.address = None
+           
     def __getstate__(self):
         attributes = self.__dict__
         return attributes

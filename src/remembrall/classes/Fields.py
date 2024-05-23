@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from ..helpers.customErrors import ShortName, PhoneValidationError, DateFormatError
+from ..helpers.customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
 from ..helpers.constants import format
 from ..helpers.json_converter import to_json
 
@@ -73,6 +73,20 @@ class Birthday(Field):
 
     def __str__(self):
         return datetime.strftime(self.value, format)
+    
+class Address(Field):
+    def __init__(self, value: str):
+        Address.check_address(value.strip())
+        self.value = value.strip()
+
+    def change_address(self, new_address: str):
+        Address.check_address(new_address.strip())
+        self.value = new_address.strip()
+
+    @staticmethod
+    def check_address(address: str):
+        if len(address) < 2 or len(address) > 100:
+            raise AddressValidationError("Address should be at least 2 chars and not more than 100 chars.")
 
     def edit_birthday(self, value:str):
         self.__init__(value)
