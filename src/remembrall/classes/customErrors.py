@@ -9,3 +9,6 @@ class DateFormatError(Exception):
 
 class AddressValidationError(ValueError):
     pass
+
+class NoteError(Exception):
+    pass
