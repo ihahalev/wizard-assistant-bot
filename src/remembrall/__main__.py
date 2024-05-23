@@ -19,6 +19,7 @@ import sys
 from remembrall.classes import Record
 from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data
+from remembrall.helpers.help_function import show_help
 
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
@@ -118,6 +119,9 @@ def main(test_users = None):
             case "remove-tag":
                 # remove note tag
                 print(book_operations.remove_note_tag(args, book))
+                # show all comands
+            case "help":
+                show_help()
             case _:
                 print("Invalid command.")
 
