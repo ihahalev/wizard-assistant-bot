@@ -29,8 +29,7 @@ class Record:
     def add_email(self, user_email: str):
         email = self.find_email(user_email)
         if email:
-            print( "Email exists")
-            return
+            return "Email exists"
         valid_email = Email(user_email)
         self.emails.append(valid_email)
 
@@ -60,7 +59,6 @@ class Record:
     def edit_email(self, find_e: str, replace_e: str):
         email = self.find_email(find_e)
         if not email:
-            # print( "Email not found")
             raise EmailValidationError("Email address not found")
         email.value = Email(replace_e).value
 
