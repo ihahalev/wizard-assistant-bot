@@ -19,7 +19,7 @@ import sys
 from remembrall.classes import Record
 from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data
-from helpers.greeting import farewell, greeting
+from remembrall.helpers.greeting import farewell, greeting
 
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
