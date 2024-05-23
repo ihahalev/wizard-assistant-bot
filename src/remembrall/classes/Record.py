@@ -54,21 +54,14 @@ class Record:
     def add_address(self, address):
         if not self.address:
             self.address = Address(address)
-            return "Address added."
-        return "Address already exists."
 
     def change_address(self, new_address):
         if self.address:
             self.address.change_address(new_address)
-            return "Address changed."
-        self.add_address(new_address)
-        return "Address added."
     
     def remove_address(self):
         if self.address:
             self.address = None
-            return "Address deleted."
-        return "No address to delete."
            
     def __getstate__(self):
         attributes = self.__dict__

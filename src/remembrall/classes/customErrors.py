@@ -10,8 +10,5 @@ class PhoneValidationError(Exception):
 class DateFormatError(Exception):
     pass
 
-class AddressValidationError(ValueError):
-    pass
-
 class NoteError(Exception):
     pass
