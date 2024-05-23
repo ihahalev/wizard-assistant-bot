@@ -69,13 +69,13 @@ def main(test_users = None):
                 print(book_operations.change_phone(args, book))
             case "remove-phone":
                 # remove contact phone
-                print(book_operations.add_birthday(args, book))
+                print(book_operations.remove_phone(args, book))
             case "add-birthday":
                 # add contact birthday
                 print(book_operations.add_birthday(args, book))
             case "change-birthday":
                 # change contact birthday
-                print(book_operations.add_birthday(args, book))
+                print(book_operations.change_birthday(args, book))
             case "birthdays":
                 # get upcoming birthdays
                 print(book_operations.get_birthdays(args, book))

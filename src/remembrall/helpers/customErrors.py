@@ -6,3 +6,9 @@ class PhoneValidationError(Exception):
 
 class DateFormatError(Exception):
     pass
+
+class EmailFormatError(Exception):
+    pass
+
+class EmailValidationError(Exception):
+    pass

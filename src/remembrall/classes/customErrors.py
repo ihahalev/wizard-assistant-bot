@@ -12,9 +12,3 @@ class DateFormatError(Exception):
 
 class NoteError(Exception):
     pass
-
-class EmailFormatError(Exception):
-    pass
-
-class EmailValidationError(Exception):
-    pass
