@@ -31,6 +31,8 @@ class AddressBook(UserDict):
             user_year = str(user.birthday.value.year)
             year_now = str((today+timedelta(days=depth_days+7)).year)
             user_data = str(user.birthday.value)
+            # birthday_this_year = datetime(year=today.year, month=birth_date.month, day=birth_date.day).date()
+
             last_birthday = re.sub(user_year, year_now, user_data)
             last_birthday_to_data = datetime.strptime(last_birthday, format)
             if (-1 + depth_days) <= (last_birthday_to_data - today).days < (6 + depth_days):
