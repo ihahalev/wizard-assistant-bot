@@ -19,6 +19,7 @@ import sys
 from remembrall.classes import Record
 from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data
+from remembrall.helpers.greeting import farewell, greeting
 from remembrall.helpers.help_function import show_help
 
 def parse_input(user_input: str) -> tuple:
@@ -38,7 +39,7 @@ def main(test_users = None):
                 rec.add_birthday(user['birthday'])
             book.add_record(rec)
         print("Test data added")
-    print("Welcome to the assistant bot!")
+    greeting()
     while True:
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
@@ -46,7 +47,7 @@ def main(test_users = None):
         match command:
             case "close" | "exit":
                 save_data(book)
-                print("Good bye!")
+                farewell()
                 break
             case "hello":
                 print("How can I help you?")
