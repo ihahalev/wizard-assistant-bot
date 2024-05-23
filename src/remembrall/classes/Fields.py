@@ -1,7 +1,8 @@
 import re
 from datetime import datetime
 
-from .customErrors import ShortName, PhoneValidationError, DateFormatError, EmailFormatError
+from ..helpers.customErrors import ShortName, PhoneValidationError, DateFormatError, EmailFormatError
+
 from ..helpers.constants import format
 from ..helpers.json_converter import to_json
 
