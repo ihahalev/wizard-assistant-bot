@@ -1,5 +1,5 @@
 from .wrappers import input_error
-from ..classes import AddressBook, Record, Address
+from ..classes import AddressBook, Record
 
 @input_error
 def add_contact(args, book: AddressBook):
