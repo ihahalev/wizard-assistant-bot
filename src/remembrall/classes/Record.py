@@ -1,7 +1,7 @@
-from classes import Name, Phone, Birthday, Email
+from .Fields import Name, Phone, Birthday, Email
 from .customErrors import PhoneValidationError, EmailValidationError
-from helpers.wrappers import input_error
-from helpers.json_converter import to_json
+from ..helpers.wrappers import input_error
+from ..helpers.json_converter import to_json
 
 class Record:
     def __init__(self, name: str):

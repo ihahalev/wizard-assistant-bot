@@ -1,8 +1,9 @@
 import re
 from datetime import datetime
-from helpers.constants import format
+
 from .customErrors import ShortName, PhoneValidationError, DateFormatError, EmailFormatError
-from helpers.json_converter import to_json
+from ..helpers.constants import format
+from ..helpers.json_converter import to_json
 
 class Field:
     def __init__(self, value):

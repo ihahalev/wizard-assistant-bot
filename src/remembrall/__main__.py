@@ -14,10 +14,11 @@ Version:
 
 - wizards-remembrall v1.0.0
 """
+
 import sys
-from classes import Record
-from helpers import book_operations
-from helpers.data_upload import load_data, save_data
+from remembrall.classes import Record
+from remembrall.helpers import book_operations
+from remembrall.helpers.data_upload import load_data, save_data
 
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
