@@ -1,6 +1,6 @@
 import datetime
 from collections import UserDict
-from remembrall.classes.customErrors import NoteError
+from .customErrors import NoteError
 
 
 class Note:
@@ -24,7 +24,7 @@ class Note:
         return ' '.join(self.tags).lower() if self.tags else ""
 
     def __str__(self) -> str:
-        return f"Title: {self.title:^2}| Tags: {', '.join(self.tags):>20} | {self.content:<70}"
+        return f"Title: {self.title:^2}| Tags: {', '.join(self.tags):>20} | Content: {self.content:<70} | Date: {self.creation_date.strftime('%d.%m.%Y.%H.%M')}"
 
 
 class NoteBook(UserDict):
@@ -55,7 +55,7 @@ class NoteBook(UserDict):
     def find_note(self, title: str) -> Note:
         return self.data.get(title)
 
-    def find_with_context(self, search_str: str) -> list[Note]:
+    def find_with_content(self, search_str: str) -> list[Note]:
         notes = self.data.values()
         return [note for n in notes if search_str.lower() in n.content.lower()]
 
