@@ -1,4 +1,4 @@
-from constants import commands
+from .constants import commands
 from colorama import Fore, Style
 def show_help():
     help_string = ''
