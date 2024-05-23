@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from .customErrors import ShortName, PhoneValidationError, DateFormatError
+from .customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
 from ..helpers.constants import format
 from ..helpers.json_converter import to_json
 
@@ -75,13 +75,11 @@ class Birthday(Field):
         return datetime.strftime(self.value, format)
     
 class Address(Field):
-    def __init__(self, value: str, existing_address=None):
-        if existing_address is not None:
-            raise ValueError("Address already exists.")
+    def __init__(self, value: str):
         Address.check_address(value.strip())
         self.value = value.strip()
 
-    def edit_address(self, new_address: str):
+    def change_address(self, new_address: str):
         Address.check_address(new_address.strip())
         self.value = new_address.strip()
 

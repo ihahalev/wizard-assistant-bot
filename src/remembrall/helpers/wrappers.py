@@ -1,6 +1,6 @@
 import re
 
-from ..classes.customErrors import ShortName, PhoneValidationError, DateFormatError
+from ..classes.customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -16,7 +16,7 @@ def input_error(func):
             got = re.search(pattern, msg)
             if got:
                 is_birthday = func.__name__ == "add_birthday"
-                is_address = func.__name__ == "edit_address" or func.__name__ == "add_address"
+                is_address = func.__name__ == "change_address" or func.__name__ == "add_address"
                 count = got.group(1)
                 # depending on N return corresponding message
                 if count == '0':
@@ -39,7 +39,7 @@ def input_error(func):
         except KeyError:
             return "Contact does not exist."
         except IndexError:
-            if func.__name__ in ['add_address', 'edit_address']:
+            if func.__name__ in ['add_address', 'change_address']:
                 if len(args[0]) == 0:
                     return "Please give me name and address."
             else:

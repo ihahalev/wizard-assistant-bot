@@ -27,7 +27,7 @@ def parse_input(user_input: str) -> tuple:
 
 def main(test_users = None):
     book = load_data()
-    load_test = len(sys.argv)>1 and sys.argv =="test" and test_users and not book.data
+    load_test = len(sys.argv)>1 and sys.argv[1] =="test" and test_users and not book.data
     if load_test:
         for user in test_users:
             rec = Record(user['name'])
@@ -89,10 +89,13 @@ def main(test_users = None):
                 pass
             case "add-address":
                 # add contact address
-                pass
+                print(book_operations.add_address(args, book))
             case "change-address":
                 # change contact address
-                pass
+                print(book_operations.change_address(args, book))
+            case "remove-address":
+                # remove contact address
+                print(book_operations.remove_address(args, book))
             case "add-note":
                 # add note with title and text
                 pass

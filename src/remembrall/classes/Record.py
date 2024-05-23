@@ -1,4 +1,4 @@
-from .Fields import Name, Phone, Birthday
+from .Fields import Name, Phone, Birthday, Address
 from .customErrors import PhoneValidationError
 from ..helpers.wrappers import input_error
 from ..helpers.json_converter import to_json
@@ -44,35 +44,31 @@ class Record:
         if not self.birthday:
             self.birthday = Birthday(birthday)
 
-    def add_address(self, address):
-        if address:
-            try:
-                self.address = Address(address, existing_address=self.address)
-                return "Address added."
-            except ValueError as adderr:
-                return str(adderr)
-
-    def edit_address(self, new_address):
-        if new_address:
-            Address.check_address(new_address)
-            if isinstance(self.address, Address):
-                self.address.edit_address(new_address)
-                return "Address updated."
-            else:
-                return "No address to edit."
-    
-    def delete_address(self):
-        if self.address:
-            self.address = None
-            return "Address deleted."
-        return "No address to delete."
-        
     def edit_birthday(self, birthday:str):
         if not self.birthday:
             self.birthday = Birthday(birthday)
         else:
             self.birthday.edit_birthday(birthday)
 
+    def add_address(self, address):
+        if not self.address:
+            self.address = Address(address)
+            return "Address added."
+        return "Address already exists."
+
+    def change_address(self, new_address):
+        if self.address:
+            self.address.change_address(new_address)
+            return "Address changed."
+        self.add_address(new_address)
+        return "Address added."
+    
+    def remove_address(self):
+        if self.address:
+            self.address = None
+            return "Address deleted."
+        return "No address to delete."
+           
     def __getstate__(self):
         attributes = self.__dict__
         return attributes

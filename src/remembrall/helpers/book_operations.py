@@ -133,7 +133,7 @@ def add_address(args: list, book: AddressBook) -> str:
     return found.add_address(address) 
 
 @input_error
-def edit_address(args: list, book: AddressBook) -> str:
+def change_address(args: list, book: AddressBook) -> str:
     '''Edit address of a contact. If contact does not exist, return "Contact not found."
     If address is not present, return "No address to edit."
     If address is edited, return "Address updated."
@@ -146,10 +146,10 @@ def edit_address(args: list, book: AddressBook) -> str:
     found = book.find(name)
     if not found:
         return "Contact not found."
-    return found.edit_address(address)
+    return found.change_address(address)
 
 @input_error
-def delete_address(args: list, book: AddressBook) -> str:
+def remove_address(args: list, book: AddressBook) -> str:
     '''Delete address of a contact. If contact does not exist, return "Contact not found.
     If address is not present, return "No address to delete."
     If address is deleted, return "Address deleted."
@@ -158,5 +158,4 @@ def delete_address(args: list, book: AddressBook) -> str:
     found = book.find(name)
     if not found:
         return "Contact not found."
-    return found.delete_address()
-
+    return found.remove_address()
