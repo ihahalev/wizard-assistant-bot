@@ -1,4 +1,5 @@
 format = "%d.%m.%Y"
+created_at_format = '%d.%m.%Y.%H.%M'
 
 commands = [['Command', 'Parameters', 'Description'],
                 ['all-contacts', '', 'list all information about contacts'],
@@ -27,3 +28,5 @@ commands = [['Command', 'Parameters', 'Description'],
                 ['sort-tag', '', 'list all Notes sorted by number of tags'],
                 ['close, exit', '', 'exit the bot'],
                 ['help', '', 'list all bot commands']]
+
+storage_link = "src/storage"

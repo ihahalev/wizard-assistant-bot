@@ -62,7 +62,7 @@ class Record:
     def remove_address(self):
         if self.address:
             self.address = None
-           
+
     def __getstate__(self):
         attributes = self.__dict__
         return attributes
@@ -92,6 +92,11 @@ class Record:
                 record.add_birthday(birthday)
             except Exception as error:
                 print(f"Birthday cannot be added to record, {type(error)}, {error}, {json_dict}")
+            try:
+                address = json_dict['address']['value']
+                record.add_address(address)
+            except Exception as error:
+                print(f"Address cannot be added to record, {type(error)}, {error}, {json_dict}")
             return record
         except Exception as error:
             print(f"Record cannot be created, {type(error)}, {error}, {json_dict}")

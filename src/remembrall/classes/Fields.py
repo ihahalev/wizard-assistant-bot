@@ -73,7 +73,13 @@ class Birthday(Field):
 
     def __str__(self):
         return datetime.strftime(self.value, format)
-    
+
+    def edit_birthday(self, birthday:str):
+        if not self.birthday:
+            self.birthday = Birthday(birthday)
+        else:
+            self.birthday.edit_birthday(birthday)
+
 class Address(Field):
     def __init__(self, value: str):
         Address.check_address(value.strip())
