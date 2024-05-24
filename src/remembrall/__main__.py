@@ -21,6 +21,8 @@ from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data
 from remembrall.helpers.greeting import farewell, greeting
 from remembrall.helpers.help_function import show_help
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from remembrall.helpers.intellectual_analysis import session
 
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
@@ -43,7 +45,7 @@ def main(test_users = None):
         print("Test data added")
     greeting()
     while True:
-        user_input = input("Enter a command: ")
+        user_input = session.prompt("Enter a command: ", auto_suggest=AutoSuggestFromHistory(), complete_while_typing=False)
         command, *args = parse_input(user_input)
 
         match command:
