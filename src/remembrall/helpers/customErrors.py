@@ -12,3 +12,6 @@ class EmailFormatError(Exception):
 
 class EmailValidationError(Exception):
     pass
+
+class AddressValidationError(ValueError):
+    pass

@@ -115,7 +115,6 @@ def get_birthdays(args: list, book: AddressBook) -> str:
     for record in birthdays:
         output += f"\n{record}"
     return output
-
 @input_error
 def add_email(args: list, book: AddressBook) -> str:
     name, email = args
@@ -136,21 +135,57 @@ def change_email(args: list, book: AddressBook) -> str:
 
 @input_error
 def add_address(args: list, book: AddressBook) -> str:
-    name, address = args
+    '''Add address to a contact. If contact does not exist, return "Contact not found."
+    If address is already present, return "Address already exists."
+    If address is added, return "Address added."
+    '''
+    if len(args) < 1:
+        raise IndexError()
+    name, address = ' '.join(args).split(' ', 1)
+    if not address:
+        raise ValueError()
     found = book.find(name)
     if not found:
         return "Contact not found."
-    # TODO: Add address to record
-    return "Address added"
+    if found.address:
+        return "Address already exists."
+    found.add_address(address)
+    return "Address added."
 
 @input_error
 def change_address(args: list, book: AddressBook) -> str:
-    name, input, new_address = args
+    '''Edit address of a contact. If contact does not exist, return "Contact not found."
+    If address is not present, return "No address to edit."
+    If address is edited, return "Address updated."
+    '''
+    if len(args) < 1:
+        raise IndexError()
+    name, address = ' '.join(args).split(' ', 1)
+    if not address:
+        raise ValueError()
     found = book.find(name)
     if not found:
         return "Contact not found."
-    # TODO: Change address in record
-    return "Address changed"
+    if found.address:
+        found.change_address(address)
+        return "Address changed."
+    found.add_address(address)
+    return "Address added."
+
+@input_error
+def remove_address(args: list, book: AddressBook) -> str:
+    '''Delete address of a contact. If contact does not exist, return "Contact not found.
+    If address is not present, return "No address to delete."
+    If address is deleted, return "Address deleted."
+    '''
+    name = args[0]
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    if found.address:
+        found.remove_address()
+        return "Address deleted."
+    return "No address to delete."
 
 @input_error
 def get_all_notes(book: AddressBook) -> str:

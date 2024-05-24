@@ -1,6 +1,4 @@
-from .Fields import Name, Phone, Birthday, Email
-
-from ..helpers.customErrors import PhoneValidationError, EmailValidationError
+from .Fields import Name, Phone, Birthday, Address, Email
 
 from ..helpers.wrappers import input_error
 from ..helpers.json_converter import to_json
@@ -11,14 +9,15 @@ class Record:
         self.phones: list[Phone] = []
         self.birthday = None
         self.emails: list[Email] = []       
+        self.address = None
 
     def __str__(self):
         name = f"name: {self.name.value}"
         phones = f"phones: {'; '.join(p.value for p in self.phones if p.value)}"
         birthday = f"birthday: {self.birthday if self.birthday else ''}"
+        address = f"address: {self.address if self.address else ''}"
         emails = f"emails: {'; '.join(e.value for e in self.emails if e.value)}"
-
-        return f"Contact {name}, {phones}, {birthday}, {emails}"
+        return f"Contact {name}, {phones}, {birthday}, {address}, {emails}"
 
     def edit_name(self, name:str):
         self.name.edit_name(name)
@@ -74,6 +73,18 @@ class Record:
         else:
             self.birthday.edit_birthday(birthday)
 
+    def add_address(self, address):
+        if not self.address:
+            self.address = Address(address)
+
+    def change_address(self, new_address):
+        if self.address:
+            self.address.change_address(new_address)
+    
+    def remove_address(self):
+        if self.address:
+            self.address = None
+           
     def __getstate__(self):
         attributes = self.__dict__
         return attributes
