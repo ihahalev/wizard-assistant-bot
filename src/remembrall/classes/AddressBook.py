@@ -26,21 +26,20 @@ class AddressBook(UserDict):
     def get_upcoming_birthdays(self, depth_days:int) -> list[dict]:
         today = datetime.today().date()
         b_users = []
+        if depth_days < 0:
+            x = depth_days
+            y = 1
+        else:
+            x = 0
+            y = depth_days + 1
 
         for rec in self.data.values():
             birth_date = rec.birthday.value if rec.birthday else None
-            t = today+timedelta(days=depth_days)
-            print(t)
-            b_day_current_year = datetime(year=(today+timedelta(days=depth_days)).year, month=birth_date.month, day=birth_date.day).date()
-            b_day_current_year_pl7 = datetime(year=(today+timedelta(days=depth_days+7)).year, month=birth_date.month, day=birth_date.day).date()
-            print(b_day_current_year_pl7 - b_day_current_year)
-            if (-1 + depth_days) <= (b_day_current_year - today).days < (6 + depth_days):
-                match b_day_current_year.weekday():
-                    case 5:
-                        b_day_current_year = b_day_current_year + timedelta(days=2)
-                    case 6:
-                        b_day_current_year = b_day_current_year + timedelta(days=1)        
-                b_users.append({"name": rec.name.value, "congratulation_date": b_day_current_year.strftime(format)})
+            for day in range(x, y):
+                b_day_on_this_day = datetime(year=(today+timedelta(days=day)).year, month=birth_date.month, day=birth_date.day).date()
+                years_old = b_day_on_this_day.year - birth_date.year
+                if (day == (b_day_on_this_day - today).days and years_old >= 0):      
+                    b_users.append({"name": rec.name.value, "congratulation_date": b_day_on_this_day.strftime(format), "years_old": years_old})
         return b_users
 
     def __getstate__(self):
