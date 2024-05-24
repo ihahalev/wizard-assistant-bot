@@ -116,14 +116,13 @@ def get_birthdays(args: list, book: AddressBook) -> str:
         output += f"\n{record}"
     return output
 
-# @input_error
+@input_error
 def add_email(args: list, book: AddressBook) -> str:
     name, email = args
     found = book.find(name)
     if not found:
         return "Contact not found."
-    # TODO: Add email to record
-    print("email")
+    found.add_email(email)
     return "Email added"
 
 @input_error
@@ -132,8 +131,17 @@ def change_email(args: list, book: AddressBook) -> str:
     found = book.find(name)
     if not found:
         return "Contact not found."
-    # TODO: Change email in record
+    found.edit_email(input, new_email)
     return "Email changed"
+
+@input_error
+def remove_email(args: list, book: AddressBook) -> str:
+    name, email = args
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    found.remove_email(email)
+    return "Email updated."
 
 @input_error
 def add_address(args: list, book: AddressBook) -> str:

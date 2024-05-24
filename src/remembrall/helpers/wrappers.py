@@ -35,12 +35,16 @@ def input_error(func):
                         return "Give me address please."
                     if is_email:
                         return "Give me email address please."                   
-                    return "Give me phone please."
+                    return "Give me parameters please."
                 elif count == '2':
+                    if is_email:
+                        return "Give me new email address please."
                     return "Give me new phone please."
             # if we have only expected, too many entered args
             elif msg.find("expected") != -1:
                 return "Too many arguments."
+            elif func.__name__ == "get_birthdays":
+                return "Please give me a number."
             # any other unexpected ValueError
             return f"{func.__name__} error, {type(ve)}, {ve}"
         except KeyError:
