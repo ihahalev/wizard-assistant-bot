@@ -123,6 +123,7 @@ def add_email(args: list, book: AddressBook) -> str:
     if not found:
         return "Contact not found."
     # TODO: Add email to record
+    print("email")
     return "Email added"
 
 @input_error
