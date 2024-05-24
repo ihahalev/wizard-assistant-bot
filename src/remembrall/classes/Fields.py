@@ -75,10 +75,7 @@ class Birthday(Field):
         return datetime.strftime(self.value, format)
 
     def edit_birthday(self, birthday:str):
-        if not self.birthday:
-            self.birthday = Birthday(birthday)
-        else:
-            self.birthday.edit_birthday(birthday)
+        self.__init__(birthday)
 
 class Address(Field):
     def __init__(self, value: str):
@@ -93,6 +90,3 @@ class Address(Field):
     def check_address(address: str):
         if len(address) < 2 or len(address) > 100:
             raise AddressValidationError("Address should be at least 2 chars and not more than 100 chars.")
-
-    def edit_birthday(self, value:str):
-        self.__init__(value)
