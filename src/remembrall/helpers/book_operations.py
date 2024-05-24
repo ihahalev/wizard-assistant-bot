@@ -1,4 +1,4 @@
-from .wrappers import input_error
+from .wrappers import input_error, note_error
 from ..classes import AddressBook, Record, NoteBook, Note
 
 @input_error
@@ -196,8 +196,15 @@ def remove_address(args: list, book: AddressBook) -> str:
         return "Address deleted."
     return "No address to delete."
 
-@input_error
+@note_error
 def get_all_notes(notebook: NoteBook) -> str:
+    '''
+    Get all notes from the notebook. If notebook is empty, return "Note book is empty."
+    If notes are present, return all notes in the format:
+    "All Notes:
+    Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1
+    Title: title2 | Tags: tag1, tag2 | Content: content2 | Date: date2
+    '''
     notes = notebook.get_all_notes()
     if not notes:
         return "Note book is empty."
@@ -207,30 +214,43 @@ def get_all_notes(notebook: NoteBook) -> str:
     return output
 
 
-@input_error
+@note_error
 def add_note(args: list, notebook: NoteBook) -> str:
+    '''Add a note to the notebook. If note with the same title exists, return 
+    "Note with this title exists." If note is added, return "Note added."
+    '''
     title = args[0]
     text = ' '.join(args[1:])
     note = Note(title, text)
     notebook.add_note(note)
     return "Note added."
 
-@input_error
+@note_error
 def show_note(args: list, book: NoteBook) -> str:
+    '''Show a note with the given title. If note is not found, return "Note not found."
+    If note is found, return the note in the format:
+    "Title: title | Tags: tag1, tag2 | Content: content | Date: date"
+    '''
     title = args[0]
     note = book.find_note(title)
     if not note:
         return "Note not found."
     return str(note)
 
-@input_error
+@note_error
 def change_note(args: list, book: NoteBook) -> str:
+    '''Change the text of a note. If note is not found, return "Note not found."
+    If note is found, change the text and return "Note updated."
+    '''
     title, new_text = args
     book.edit_note(title, new_text)
     return "Note updated."
 
-@input_error
+@note_error
 def remove_note(args: list, book: NoteBook) -> str:
+    '''Remove a note with the given title. If note is not found, return "Note not found."
+    If note is found, remove the note and return "Note removed."
+    '''
     title = args[0]
     note = book.find_note(title)
     if not note:
@@ -238,14 +258,20 @@ def remove_note(args: list, book: NoteBook) -> str:
     book.remove_note(title)
     return "Note removed."
 
-@input_error
+@note_error
 def change_note_title(args: list, book: NoteBook) -> str:
+    '''Change the title of a note. If note is not found, return "Note not found."
+    If note is found, change the title and return "Note title changed."
+    '''
     title, new_title = args
     book.change_title(title, new_title)
     return "Note title changed."
 
-@input_error
+@note_error
 def add_note_tag(args: list, book: NoteBook) -> str:
+    '''Add a tag to a note. If note is not found, return "Note not found."
+    If tag is added, return "Tag added."
+    '''
     title, tag = args
     note = book.find_note(title)
     if not note:
@@ -253,17 +279,11 @@ def add_note_tag(args: list, book: NoteBook) -> str:
     note.add_tag(tag)
     return "Tag added"
 
-@input_error
-def change_note_tag(args: list, book: NoteBook) -> str:
-    title, tag, new_tag = args
-    note = book.find_note(title)
-    if not note:
-        return "Note not found."
-    note.change_tag(tag, new_tag)
-    return "Tag changed"
-
-@input_error
+@note_error
 def remove_note_tag(args: list, book: NoteBook) -> str:
+    '''Remove a tag from a note. If note is not found, return "Note not found."
+    If tag is removed, return "Tag removed."
+    '''
     title, tag = args
     note = book.find_note(title)
     if not note:
@@ -271,18 +291,21 @@ def remove_note_tag(args: list, book: NoteBook) -> str:
     note.remove_tag(tag)
     return "Tag removed"
 
-@input_error
-def find_notes_with_content(args: list, notebook: NoteBook) -> str:
-    search_str = args[0]
-    notes = notebook.find_with_content(search_str)
+@note_error
+def sort_notes_by_tags(args: list, notebook: NoteBook) -> str:
+    '''Sort notes by tags. If no tags are given, return "Please give a tags."
+    If notes are found, return all notes with the given tags in the format:
+    "Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1
+    Title: title2 | Tags: tag1, tag2 | Content: content2 | Date: date2"
+    '''
+    if not args:
+        return "Please give a tags."
+    search_tags = args
+    notes = []
+    for tag in search_tags:
+        notes.extend(notebook.find_with_tag(tag)) 
     if not notes:
-        return "No notes found with the given content."
-    return '\n'.join(str(note) for note in notes)
-
-@input_error
-def find_notes_with_tag(args: list, notebook: NoteBook) -> str:
-    search_tag = args[0]
-    notes = notebook.find_with_tag(search_tag)
-    if not notes:
-        return "No notes found with the given tag."
-    return '\n'.join(str(note) for note in notes)
+        return "No notes found with the given tags."
+    notes = list(set(notes))
+    sorted_notes = sorted(notes, key=lambda note: note.tags)
+    return '\n'.join(str(note) for note in sorted_notes)

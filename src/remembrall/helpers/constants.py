@@ -24,7 +24,6 @@ commands = [['Command', 'Parameters', 'Description'],
                 ['change-title', '[Title] [New Title]', 'change note title'],
                 ['add-tag', '[Title] [Tag]', 'add note tag'],
                 ['remove-tag', '[Title]', 'remove note tag'],
-                ['find-tag', '[Tag]', 'list all Notes with tag'],
-                ['find-content', '[Content]', 'list all Notes with content'],
+                ['sort-tags', '[Tag1] [Tag2] ...', 'sort all Notes with tag'],
                 ['close, exit', '', 'exit the bot'],
                 ['help', '', 'list all bot commands']]

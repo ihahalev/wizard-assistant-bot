@@ -127,12 +127,9 @@ def main(test_users = None):
             case "remove-tag":
                 # remove note tag
                 print(book_operations.remove_note_tag(args, notebook))
-            case "find-tag":            
-                # find notes with tag
-                print(book_operations.find_notes_with_tag(args, notebook))
-            case "find-content":
-                # find notes with content
-                print(book_operations.find_notes_with_content(args, notebook))
+            case "sort-tags":
+                # sort notes by tags
+                print(book_operations.sort_notes_by_tags(args, notebook))
             case "help":
                 show_help()
             case _:
