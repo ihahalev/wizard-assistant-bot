@@ -1,20 +1,23 @@
 from datetime import datetime
-
+from remembrall.helpers.output_functions import colorful_wrap
+@colorful_wrap
 def greeting():
     hour = datetime.now().hour
     if (hour >= 6) and (hour < 12):
-        print(f"Good Morning ")
+        return "Good Morning Mighty Wizard"
     elif (hour >= 12) and (hour < 16):
-        print(f"Good afternoon ")
+        return "Good afternoon Mighty Wizard"
     elif (hour >= 16) and (hour < 21):
-        print(f"Good Evening ")
+        return ("Good Evening Mighty Wizard")
     else:
-        print(f"Good Night ")
-    print(f"Welcome to the Assistant bot for wizards of the academy! Type | help | to see all bot commands") 
+        return "Good Night Mighty Wizard"
 
+@colorful_wrap
 def farewell():
     hour = datetime.now().hour
     if hour >= 21 or hour <= 6:
-        print("Good night sir, take care!")
+        return "Good night Mighty Wizard, take care!"
     else:
-        print('Have a good day sir!')
+        return "Have a good day Mighty Wizard!"
+
+
