@@ -1,7 +1,8 @@
 import re
 from datetime import datetime
 
-from ..helpers.customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
+from ..helpers.customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError, EmailFormatError
+
 from ..helpers.constants import format
 from ..helpers.json_converter import to_json
 
@@ -71,11 +72,11 @@ class Birthday(Field):
                 raise DateFormatError("Invalid date format. Use DD.MM.YYYY")
             raise ValueError(err)
 
-    def __str__(self):
-        return datetime.strftime(self.value, format)
-
     def edit_birthday(self, birthday:str):
         self.__init__(birthday)
+
+    def __str__(self):
+        return datetime.strftime(self.value, format)
 
 class Address(Field):
     def __init__(self, value: str):
@@ -90,3 +91,18 @@ class Address(Field):
     def check_address(address: str):
         if len(address) < 2 or len(address) > 100:
             raise AddressValidationError("Address should be at least 2 chars and not more than 100 chars.")
+    
+class Email(Field):
+    def __init__(self, email: str):
+        Email.validation(email)
+        super().__init__(email)
+
+    @staticmethod
+    def validation(self, value):
+        pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+        search_email = re.search(pattern, value)
+
+        if search_email:
+            return search_email.group()
+        else:
+            raise EmailFormatError("The email address is not valid.")

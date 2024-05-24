@@ -21,6 +21,8 @@ from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data
 from remembrall.helpers.greeting import farewell, greeting
 from remembrall.helpers.help_function import show_help
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from remembrall.helpers.intellectual_analysis import session
 
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
@@ -55,7 +57,7 @@ def main(test_users = None, test_notes = None):
             print("Test data added")
     greeting()
     while True:
-        user_input = input("Enter a command: ")
+        user_input = session.prompt("Enter a command: ", auto_suggest=AutoSuggestFromHistory(), complete_while_typing=False)
         if not user_input:
             print("No command provided")
             continue
@@ -88,13 +90,13 @@ def main(test_users = None, test_notes = None):
                 print(book_operations.change_phone(args, book))
             case "remove-phone":
                 # remove contact phone
-                print(book_operations.add_birthday(args, book))
+                print(book_operations.remove_phone(args, book))
             case "add-birthday":
                 # add contact birthday
                 print(book_operations.add_birthday(args, book))
             case "change-birthday":
                 # change contact birthday
-                print(book_operations.add_birthday(args, book))
+                print(book_operations.change_birthday(args, book))
             case "birthdays":
                 # get upcoming birthdays
                 print(book_operations.get_birthdays(args, book))

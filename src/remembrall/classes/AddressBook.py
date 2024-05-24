@@ -25,28 +25,22 @@ class AddressBook(UserDict):
 
     def get_upcoming_birthdays(self, depth_days:int) -> list[dict]:
         today = datetime.today().date()
-        # for test
-        # today = datetime.strptime("22.01.2024", format).date()
-        next_week = today + timedelta(days=depth_days)
-        greatings = []
+        b_users = []
+        if depth_days < 0:
+            x = depth_days
+            y = 1
+        else:
+            x = 0
+            y = depth_days + 1
+
         for rec in self.data.values():
             birth_date = rec.birthday.value if rec.birthday else None
-            if not birth_date:
-                continue
-            birthday_this_year = datetime(year=today.year, month=birth_date.month, day=birth_date.day).date()
-            if (birthday_this_year < today or birthday_this_year > next_week):
-                continue
-            birthday_this_year_weekday = birthday_this_year.weekday()
-            if (birthday_this_year_weekday == 5):
-                #if its saturday, move greatings to monday
-                greatings_day = (birthday_this_year + timedelta(days=2)).strftime(format)
-            elif (birthday_this_year_weekday == 6):
-                #if its sunday, move greatings to monday
-                greatings_day = (birthday_this_year + timedelta(days=1)).strftime(format)
-            else:
-                greatings_day = birthday_this_year.strftime(format)
-            greatings.append({"name": rec.name.value, "congratulation_date": greatings_day})
-        return greatings
+            for day in range(x, y):
+                b_day_on_this_day = datetime(year=(today+timedelta(days=day)).year, month=birth_date.month, day=birth_date.day).date()
+                years_old = b_day_on_this_day.year - birth_date.year
+                if (day == (b_day_on_this_day - today).days and years_old >= 0):      
+                    b_users.append({"name": rec.name.value, "congratulation_date": b_day_on_this_day.strftime(format), "years_old": years_old})
+        return b_users
 
     def __getstate__(self):
         attributes = self.__dict__
