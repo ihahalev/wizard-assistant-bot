@@ -2,7 +2,7 @@ import pickle, json
 
 from .book_operations import get_all_contacts
 from .wrappers import file_read_error
-from ..classes import AddressBook
+from ..classes import AddressBook, NoteBook
 
 def save_data(book: AddressBook, filename="addressbook.pkl"):
     try:
@@ -34,6 +34,17 @@ def load_data(filename="addressbook.pkl"):
         else:
             book = AddressBook.from_json(json_book)
     return book
+
+def save_notebook_data(notebook: NoteBook, filename="notebook.pkl"):
+    with open(filename, "wb") as f:
+        pickle.dump(notebook, f)
+
+def load_notebook_data(filename="notebook.pkl"):
+    notebook = load_binary_data(filename)
+    if not notebook:
+        print("No notebook data found")
+        notebook = NoteBook()
+    return notebook
 
 @file_read_error
 def load_binary_data(filename="addressbook.pkl"):

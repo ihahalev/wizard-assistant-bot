@@ -164,3 +164,5 @@ cython_debug/
 # Data files
 addressbook.pkl
 addressbook.json
+notebook.pkl
+notebook.json

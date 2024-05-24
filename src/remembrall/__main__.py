@@ -16,9 +16,9 @@ Version:
 """
 
 import sys
-from remembrall.classes import Record
+from remembrall.classes import Record, NoteBook
 from remembrall.helpers import book_operations
-from remembrall.helpers.data_upload import load_data, save_data
+from remembrall.helpers.data_upload import load_data, save_data, load_notebook_data, save_notebook_data
 from remembrall.helpers.greeting import farewell, greeting
 from remembrall.helpers.help_function import show_help
 
@@ -29,6 +29,7 @@ def parse_input(user_input: str) -> tuple:
 
 def main(test_users = None):
     book = load_data()
+    notebook = load_notebook_data()
     load_test = len(sys.argv)>1 and sys.argv[1] =="test" and test_users and not book.data
     if load_test:
         for user in test_users:
@@ -49,6 +50,7 @@ def main(test_users = None):
         match command:
             case "close" | "exit":
                 save_data(book)
+                save_notebook_data(notebook)
                 farewell()
                 break
             case "hello":
@@ -61,7 +63,7 @@ def main(test_users = None):
                 print(book_operations.add_contact(args, book))
             case "show-contact":
                 # show contact with all info
-                pass
+                print(book_operations.show_contact(args, book))
             case "change-contact":
                 # change contact name
                 print(book_operations.change_contact(args, book))
@@ -100,32 +102,37 @@ def main(test_users = None):
                 print(book_operations.remove_address(args, book))
             case "all-notes":
                 # show all notes
-                print(book_operations.get_all_notes(book))
+                print(book_operations.get_all_notes(notebook))
             case "add-note":
                 # add note with title and text
-                print(book_operations.add_note(args, book))
+                print(book_operations.add_note(args, notebook))
             case "show-note":
                 # show note with all info
-                print(book_operations.show_note(args, book))
+                print(book_operations.show_note(args, notebook))
             case "change-note":
                 # change note text
-                print(book_operations.change_note(args, book))
+                print(book_operations.change_note(args, notebook))
             case "remove-note":
                 # remove note
-                print(book_operations.remove_note(args, book))
+                print(book_operations.remove_note(args, notebook))
             case "change-title":
                 # change note title
-                print(book_operations.change_note_title(args, book))
+                print(book_operations.change_note_title(args, notebook))
             case "add-tag":
                 # add note tag
-                print(book_operations.add_note_tag(args, book))
+                print(book_operations.add_note_tag(args, notebook))
             case "change-tag":
                 # change note tag
-                print(book_operations.change_note_tag(args, book))
+                print(book_operations.change_note_tag(args, notebook))
             case "remove-tag":
                 # remove note tag
-                print(book_operations.remove_note_tag(args, book))
-                # show all comands
+                print(book_operations.remove_note_tag(args, notebook))
+            case "find-tag":            
+                # find notes with tag
+                print(book_operations.find_notes_with_tag(args, notebook))
+            case "find-content":
+                # find notes with content
+                print(book_operations.find_notes_with_content(args, notebook))
             case "help":
                 show_help()
             case _:

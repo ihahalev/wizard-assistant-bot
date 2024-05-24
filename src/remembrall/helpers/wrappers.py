@@ -1,6 +1,6 @@
 import re
 
-from .customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
+from .customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError, NoteError
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -8,6 +8,8 @@ def input_error(func):
             return func(*args, **kwargs)
         except AddressValidationError as ave:
             return f"{ave}"
+        except NoteError as ne:
+            return f"{ne}"
         except ValueError as ve:
             # get error message
             msg: str = ve.args[0]
@@ -35,6 +37,9 @@ def input_error(func):
             elif msg.find("expected") != -1:
                 return "Too many arguments."
             # any other unexpected ValueError
+            func_names = ['add_note', 'show_note', 'change_note', 'remove_note', 'change_note_title', 'add_note_tag', 'change_note_tag', 'remove_note_tag']
+            if func.__name__ in func_names:
+                return "Invalid value provided."
             return f"{func.__name__} error, {type(ve)}, {ve}"
         except KeyError:
             return "Contact does not exist."
@@ -42,6 +47,27 @@ def input_error(func):
             if func.__name__ in ['add_address', 'change_address']:
                 if len(args[0]) == 0:
                     return "Please give me name and address."
+            if func.__name__ == 'find_notes_with_tag':
+                if len(args[0]) == 0:
+                    return "Please give me tag."
+            if func.__name__ == 'find_notes_with_content':
+                if len(args[0]) == 0:
+                    return "Please give me content."
+            if func.__name__ in ['show_note', 'remove_note', 'change_note_title', 'add_note_tag', 'change_note_tag', 'remove_note_tag', 'add_note', 'change_note',]:
+                if len(args[0]) == 0:
+                    return "Please give me title."
+            if func.__name__ in ['change_note', 'add_note']:
+                if len(args[0]) == 1:
+                    return "Please give me content."
+            if func.__name__ == 'change_note_title':
+                if len(args[0]) == 1:
+                    return "Please give me new title."
+            if func.__name__ in ['add_note_tag', 'change_note_tag', 'remove_note_tag']:
+                if len(args[0]) == 1:
+                    return "Please give me tag."
+            if func.__name__ == 'change_note_tag':
+                if len(args[0]) == 2:
+                    return "Please give me new tag." 
             else:
                 return "Enter user name."
         except ShortName as name:

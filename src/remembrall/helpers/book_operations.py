@@ -1,5 +1,5 @@
 from .wrappers import input_error
-from ..classes import AddressBook, Record
+from ..classes import AddressBook, Record, NoteBook, Note
 
 @input_error
 def add_contact(args, book: AddressBook):
@@ -76,6 +76,14 @@ def get_all_contacts(book: AddressBook) -> str:
     return output
 
 @input_error
+def show_contact(args: list, book: AddressBook) -> str:
+    name = args[0]
+    found = book.find(name)
+    if not found:
+        return "Contact not found."
+    return str(found)
+
+@input_error
 def add_birthday(args: list, book: AddressBook) -> str:
     name, birthday = args
     found = book.find(name)
@@ -115,6 +123,7 @@ def get_birthdays(args: list, book: AddressBook) -> str:
     for record in birthdays:
         output += f"\n{record}"
     return output
+
 @input_error
 def add_email(args: list, book: AddressBook) -> str:
     name, email = args
@@ -188,54 +197,92 @@ def remove_address(args: list, book: AddressBook) -> str:
     return "No address to delete."
 
 @input_error
-def get_all_notes(book: AddressBook) -> str:
-    # TODO: Get all notes from book
-    return ["Note 1"]
+def get_all_notes(notebook: NoteBook) -> str:
+    notes = notebook.get_all_notes()
+    if not notes:
+        return "Note book is empty."
+    output = "All Notes:"
+    for note in notes:
+        output += f"\n{note}"
+    return output
+
 
 @input_error
-def add_note(args: list, book: AddressBook) -> str:
-    title, text = args
-    # TODO: Add note to book
-    return "Note added"
+def add_note(args: list, notebook: NoteBook) -> str:
+    title = args[0]
+    text = ' '.join(args[1:])
+    note = Note(title, text)
+    notebook.add_note(note)
+    return "Note added."
 
 @input_error
-def show_note(args: list, book: AddressBook) -> str:
-    title = args
-    # TODO: Show note (found by title) from book
-    return "Note"
+def show_note(args: list, book: NoteBook) -> str:
+    title = args[0]
+    note = book.find_note(title)
+    if not note:
+        return "Note not found."
+    return str(note)
 
 @input_error
-def change_note(args: list, book: AddressBook) -> str:
-    title, text = args
-    # TODO: Change note in book
-    return "Note changed"
+def change_note(args: list, book: NoteBook) -> str:
+    title, new_text = args
+    book.edit_note(title, new_text)
+    return "Note updated."
 
 @input_error
-def remove_note(args: list, book: AddressBook) -> str:
-    title = args
-    # TODO: Remove note from book
-    return "Note removed"
+def remove_note(args: list, book: NoteBook) -> str:
+    title = args[0]
+    note = book.find_note(title)
+    if not note:
+        return "Note not found."
+    book.remove_note(title)
+    return "Note removed."
 
 @input_error
-def change_note_title(args: list, book: AddressBook) -> str:
+def change_note_title(args: list, book: NoteBook) -> str:
     title, new_title = args
-    # TODO: Change note title in book
-    return "Note title changed"
+    book.change_title(title, new_title)
+    return "Note title changed."
 
 @input_error
-def add_note_tag(args: list, book: AddressBook) -> str:
+def add_note_tag(args: list, book: NoteBook) -> str:
     title, tag = args
-    # TODO: Add tag to note
+    note = book.find_note(title)
+    if not note:
+        return "Note not found."
+    note.add_tag(tag)
     return "Tag added"
 
 @input_error
-def change_note_tag(args: list, book: AddressBook) -> str:
+def change_note_tag(args: list, book: NoteBook) -> str:
     title, tag, new_tag = args
-    # TODO: Change tag in note
+    note = book.find_note(title)
+    if not note:
+        return "Note not found."
+    note.change_tag(tag, new_tag)
     return "Tag changed"
 
 @input_error
-def remove_note_tag(args: list, book: AddressBook) -> str:
+def remove_note_tag(args: list, book: NoteBook) -> str:
     title, tag = args
-    # TODO: Remove tag from note
+    note = book.find_note(title)
+    if not note:
+        return "Note not found."
+    note.remove_tag(tag)
     return "Tag removed"
+
+@input_error
+def find_notes_with_content(args: list, notebook: NoteBook) -> str:
+    search_str = args[0]
+    notes = notebook.find_with_content(search_str)
+    if not notes:
+        return "No notes found with the given content."
+    return '\n'.join(str(note) for note in notes)
+
+@input_error
+def find_notes_with_tag(args: list, notebook: NoteBook) -> str:
+    search_tag = args[0]
+    notes = notebook.find_with_tag(search_tag)
+    if not notes:
+        return "No notes found with the given tag."
+    return '\n'.join(str(note) for note in notes)

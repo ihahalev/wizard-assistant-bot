@@ -1,6 +1,6 @@
 import datetime
 from collections import UserDict
-from .customErrors import NoteError
+from ..helpers.customErrors import NoteError
 
 
 class Note:
@@ -14,6 +14,12 @@ class Note:
         if tag not in self.tags:
             self.tags.append(tag)
     
+    def change_tag(self, tag, new_tag):
+            if tag in self.tags:
+                self.tags[self.tags.index(tag)] = new_tag
+            else:
+                raise NoteError ('No Tag to change')
+
     def remove_tag(self, tag):
         if tag in self.tags:
             self.tags.remove(tag)
@@ -24,10 +30,13 @@ class Note:
         return ' '.join(self.tags).lower() if self.tags else ""
 
     def __str__(self) -> str:
-        return f"Title: {self.title:^2}| Tags: {', '.join(self.tags):>20} | Content: {self.content:<70} | Date: {self.creation_date.strftime('%d.%m.%Y.%H.%M')}"
+        return f"Title: {self.title:^2}| Tags: {', '.join(self.tags):>20} | Content: {self.content:<50} | Date: {self.creation_date.strftime('%d.%m.%Y.%H.%M')}"
 
 
 class NoteBook(UserDict):
+    def get_all_notes(self) -> list:
+        return list(self.data.values())
+    
     def add_note(self, note: Note):
         if self.find_note(note.title):
             raise NoteError("This title exists")
@@ -57,8 +66,9 @@ class NoteBook(UserDict):
 
     def find_with_content(self, search_str: str) -> list[Note]:
         notes = self.data.values()
-        return [note for n in notes if search_str.lower() in n.content.lower()]
+        return [n for n in notes if search_str.lower() in n.content.lower()]
 
     def find_with_tag(self, search_tag: str) -> list[Note]:
         notes = self.data.values()
-        return [note for n in notes if search_tag.lower() in n.get_tags_as_str()]
+        return [n for n in notes if search_tag.lower() in n.get_tags_as_str()]
+    
