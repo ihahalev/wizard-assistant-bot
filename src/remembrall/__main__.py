@@ -89,6 +89,9 @@ def main(test_users = None):
             case "change-email":
                 # change contact email
                 print(book_operations.change_email(args, book))
+            case "del-email":
+                # change contact email
+                print(book_operations.remove_email(args, book))                
             case "add-address":
                 # add contact address
                 print(book_operations.add_address(args, book))
