@@ -115,6 +115,7 @@ def get_birthdays(args: list, book: AddressBook) -> str:
     for record in birthdays:
         output += f"\n{record}"
     return output
+
 @input_error
 def add_email(args: list, book: AddressBook) -> str:
     name, email = args
