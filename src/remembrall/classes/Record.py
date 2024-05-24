@@ -23,31 +23,17 @@ class Record:
     def edit_name(self, name:str):
         self.name.edit_name(name)
 
+# Phone
     @input_error
     def add_phone(self, phone_number: str):
         if not [phone for phone in self.phones if phone.value == phone_number]:
             self.phones.append(Phone(phone_number))
-
-    def add_email(self, user_email: str):
-        email = self.find_email(user_email)
-        if email:
-            return "Email exists"
-        valid_email = Email(user_email)
-        self.emails.append(valid_email)
-
-    def remove_email(self, rem_email):
-        self.emails = [e for e in self.emails if e.value != rem_email]
 
     def find_phone(self, phone_number:str) -> Phone:
         for phone in self.phones:
             if phone.value == phone_number:
                 return phone
             
-    def find_email(self, find_email: str) -> Email:
-        for e in self.emails:
-            if find_email == e.value:
-                return e
-
     def edit_phone(self, old_phone:str, new_phone:str):
         found_phone = self.find_phone(old_phone)
         if not found_phone:
@@ -58,12 +44,29 @@ class Record:
         found_phone = self.find_phone(phone)
         self.phones.remove(found_phone)
 
+# Email
+    def add_email(self, user_email: str):
+        email = self.find_email(user_email)
+        if email:
+            return "Email exists"
+        valid_email = Email(user_email)
+        self.emails.append(valid_email)
+
+    def find_email(self, find_email: str) -> Email:
+        for e in self.emails:
+            if find_email == e.value:
+                return e
+
     def edit_email(self, find_e: str, replace_e: str):
         email = self.find_email(find_e)
         if not email:
             raise EmailValidationError("Email address not found")
         email.value = Email(replace_e).value
 
+    def remove_email(self, rem_email):
+        self.emails = [e for e in self.emails if e.value != rem_email]
+
+# Birthday
     def add_birthday(self, birthday):
         if not self.birthday:
             self.birthday = Birthday(birthday)
@@ -74,6 +77,7 @@ class Record:
         else:
             self.birthday.edit_birthday(birthday)
 
+# Address
     def add_address(self, address):
         if not self.address:
             self.address = Address(address)
@@ -85,7 +89,8 @@ class Record:
     def remove_address(self):
         if self.address:
             self.address = None
-           
+
+# Serialization           
     def __getstate__(self):
         attributes = self.__dict__
         return attributes
@@ -93,6 +98,7 @@ class Record:
     def __setstate__(self, state):
         self.__dict__ = state
 
+# json
     def to_json(self):
         return to_json(self.__dict__)
 
