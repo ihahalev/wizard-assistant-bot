@@ -16,6 +16,7 @@ Version:
 """
 
 import sys
+from datetime import datetime
 from remembrall.classes import Record, Note
 from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data
@@ -23,6 +24,7 @@ from remembrall.helpers.greeting import farewell, greeting
 from remembrall.helpers.help_function import show_help
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from remembrall.helpers.intellectual_analysis import session
+from remembrall.helpers.constants import created_at_format
 
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
@@ -52,7 +54,7 @@ def main(test_users = None, test_notes = None):
                 if note['tag']:
                     rec.add_tag(note['tag'])
                 if note['created_at']:
-                    rec.created_at = note['created_at']
+                    rec.created_at = datetime.strptime(note['created_at'], created_at_format)
                 note_book.add_note(rec)
         if add_test:
             print("Test data added")
@@ -121,34 +123,34 @@ def main(test_users = None, test_notes = None):
                 print(book_operations.remove_address(args, book))
             case "all-notes":
                 # show all notes
-                print(book_operations.get_all_notes(notebook))
+                print(book_operations.get_all_notes(note_book))
             case "add-note":
                 # add note with title and text
-                print(book_operations.add_note(args, notebook))
+                print(book_operations.add_note(args, note_book))
             case "show-note":
                 # show note with all info
-                print(book_operations.show_note(args, notebook))
+                print(book_operations.show_note(args, note_book))
             case "change-note":
                 # change note text
-                print(book_operations.change_note(args, notebook))
+                print(book_operations.change_note(args, note_book))
             case "remove-note":
                 # remove note
-                print(book_operations.remove_note(args, notebook))
+                print(book_operations.remove_note(args, note_book))
             case "change-title":
                 # change note title
-                print(book_operations.change_note_title(args, notebook))
+                print(book_operations.change_note_title(args, note_book))
             case "add-tag":
                 # add note tag
-                print(book_operations.add_note_tag(args, notebook))
+                print(book_operations.add_note_tag(args, note_book))
             case "remove-tag":
                 # remove note tag
-                print(book_operations.remove_note_tag(args, notebook))
+                print(book_operations.remove_note_tag(args, note_book))
             case "sort-tags":
                 # sort notes by tags
-                print(book_operations.sort_notes_by_tags(args, notebook))
+                print(book_operations.sort_notes_by_tags(args, note_book))
             case "find-content":
                 # find notes by content
-                print(book_operations.find_notes_with_content(args, notebook))
+                print(book_operations.find_notes_with_content(args, note_book))
             case "help":
                 show_help()
             case _:
