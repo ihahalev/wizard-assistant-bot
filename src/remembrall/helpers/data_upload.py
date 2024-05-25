@@ -31,8 +31,7 @@ def save_binary_data(book: AddressBook, note_book:NoteBook, filename: str):
         pickle.dump(books, f)
 
 def save_json_data(book: AddressBook, note_book:NoteBook, filename: str):
-    notes = note_book.to_json()
-    books =  {"records": book.to_json(), "notes": notes}
+    books =  {"records": book.to_json(), "notes": note_book.to_json()}
     with open(filename, "w") as f:
         json.dump(books, f)
 

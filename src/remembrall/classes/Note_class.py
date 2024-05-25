@@ -42,7 +42,7 @@ class Note:
                     for tag in tags:
                         note.add_tag(tag)
                 else:
-                    note.add_tag(tag)
+                    note.add_tag(tags)
             except Exception as error:
                 print(f"Tag cannot be added to note, {type(error)}, {error}, {json_dict}")
             try:
