@@ -46,6 +46,8 @@ def main(test_users = None, test_notes = None):
                     rec.add_birthday(user['birthday'])
                 if user['address']:
                     rec.add_address(user['address'])
+                if user['email']:
+                    rec.add_email(user['email'])
                 book.add_record(rec)
         if test_notes and not note_book.data:
             add_test = True
@@ -158,12 +160,12 @@ def main(test_users = None, test_notes = None):
 
 if __name__ == "__main__":
     users = [
-        {"name": "Doe", "phone": "", "birthday": "21.01.1985", "address": "123 Maple St"},
-        {"name": "John", "phone": "0987654321", "birthday": "", "address": "456 Elm St"},
-        {"name": "John Doe", "phone": "7894561230", "birthday": "23.01.1985", "address": "789 Oak St"},
-        {"name": "Jane Smith", "phone": "1234567890", "birthday": "27.01.1990", "address": "987 Pine St"},
-        {"name": "Jane", "phone": "3216549870", "birthday": "28.01.1990", "address": "654 Birch St"},
-        {"name": "Smith", "phone": "0321654987", "birthday": "29.01.1990", "address": "321 Cedar St"}
+        {"name": "Doe", "phone": "", "birthday": "21.01.1985", "address": "123 Maple St", "email": "doe@mail.com"},
+        {"name": "John", "phone": "0987654321", "birthday": "", "address": "456 Elm St", "email": "john@mail.com"},
+        {"name": "John Doe", "phone": "7894561230", "birthday": "23.01.1985", "address": "789 Oak St", "email": "johndoe@mail.com"},
+        {"name": "Jane Smith", "phone": "1234567890", "birthday": "27.01.1990", "address": "987 Pine St", "email": "janesmith@mail.com"},
+        {"name": "Jane", "phone": "3216549870", "birthday": "28.01.1990", "address": "654 Birch St", "email": "jane@mail.com"},
+        {"name": "Smith", "phone": "0321654987", "birthday": "29.01.1990", "address": "321 Cedar St", "email": "smith@mail.com"}
     ]
     notes = [
         {"title": "kedavra", "content": "hell know what words", "tag":"magic", "created_at": "21.01.2024.12.30"},
