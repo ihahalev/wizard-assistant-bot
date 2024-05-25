@@ -307,5 +307,21 @@ def sort_notes_by_tags(args: list, notebook: NoteBook) -> str:
     if not notes:
         return "No notes found with the given tags."
     notes = list(set(notes))
-    sorted_notes = sorted(notes, key=lambda note: note.tags)
+
+    # Sort notes by the number of matching tags and the order of the tags in the search query
+    sorted_notes = sorted(notes, key=lambda note: (-len(set(note.tags) & set(search_tags)), [search_tags.index(tag) for tag in note.tags if tag in search_tags]))
+
     return '\n'.join(str(note) for note in sorted_notes)
+
+@note_error
+def find_notes_with_content(args: list, notebook: NoteBook) -> str:
+    '''Find notes with the given content. If no content is given, return "Please give a content."
+    If notes are found, return all notes with the given content in the format:
+    "Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1'''
+    if not args:
+        return "Please give a content."
+    search_str = args[0]
+    notes = notebook.find_with_content(search_str)
+    if not notes:
+        return "No notes found with the given content."
+    return '\n'.join(str(note) for note in notes)

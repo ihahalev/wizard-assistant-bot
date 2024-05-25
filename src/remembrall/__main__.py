@@ -16,7 +16,7 @@ Version:
 """
 
 import sys
-from remembrall.classes import Record, NoteBook
+from remembrall.classes import Record
 from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data, load_notebook_data, save_notebook_data
 from remembrall.helpers.greeting import farewell, greeting
@@ -29,7 +29,6 @@ def parse_input(user_input: str) -> tuple:
 
 def main(test_users = None):
     book = load_data()
-    notebook = load_notebook_data()
     load_test = len(sys.argv)>1 and sys.argv[1] =="test" and test_users and not book.data
     if load_test:
         for user in test_users:
@@ -50,7 +49,6 @@ def main(test_users = None):
         match command:
             case "close" | "exit":
                 save_data(book)
-                save_notebook_data(notebook)
                 farewell()
                 break
             case "hello":
@@ -121,15 +119,15 @@ def main(test_users = None):
             case "add-tag":
                 # add note tag
                 print(book_operations.add_note_tag(args, notebook))
-            case "change-tag":
-                # change note tag
-                print(book_operations.change_note_tag(args, notebook))
             case "remove-tag":
                 # remove note tag
                 print(book_operations.remove_note_tag(args, notebook))
             case "sort-tags":
                 # sort notes by tags
                 print(book_operations.sort_notes_by_tags(args, notebook))
+            case "find-content":
+                # find notes by content
+                print(book_operations.find_notes_with_content(args, notebook))
             case "help":
                 show_help()
             case _:

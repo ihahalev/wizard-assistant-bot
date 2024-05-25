@@ -35,17 +35,6 @@ def load_data(filename="addressbook.pkl"):
             book = AddressBook.from_json(json_book)
     return book
 
-def save_notebook_data(notebook: NoteBook, filename="notebook.pkl"):
-    with open(filename, "wb") as f:
-        pickle.dump(notebook, f)
-
-def load_notebook_data(filename="notebook.pkl"):
-    notebook = load_binary_data(filename)
-    if not notebook:
-        print("No notebook data found")
-        notebook = NoteBook()
-    return notebook
-
 @file_read_error
 def load_binary_data(filename="addressbook.pkl"):
     with open(filename, "rb") as f:
@@ -55,3 +44,4 @@ def load_binary_data(filename="addressbook.pkl"):
 def load_json_data(filename="addressbook.json"):
     with open(filename, "r") as f:
         return json.load(f)
+    

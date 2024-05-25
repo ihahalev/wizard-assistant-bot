@@ -84,6 +84,7 @@ def note_error(func):
                 return "Please give a note title and tag."
             if func.__name__ == 'remove_note_tag' and len(args[0]) < 2:
                 return "Please give a note title and tag."
+            return "Please give required arguments."
         except Exception as error:
             return f"{func.__name__} error, {type(error)}, {error}"
     return inner
