@@ -1,6 +1,6 @@
 from datetime import datetime
 from collections import UserDict
-from .customErrors import NoteError
+from ..helpers.customErrors import NoteError
 from ..helpers.json_converter import to_json
 from ..helpers.constants import created_at_format
 
@@ -56,6 +56,9 @@ class Note:
             print(f"Note cannot be created, {type(error)}, {error}, {json_dict}")
 
 class NoteBook(UserDict):
+    def get_all_notes(self) -> list:
+        return list(self.data.values())
+    
     def add_note(self, note: Note):
         if self.find_note(note.title):
             raise NoteError("This title exists")
