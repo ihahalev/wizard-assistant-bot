@@ -113,7 +113,7 @@ class Record:
                     for phone in phones:
                         record.add_phone(phone['value'])
                 else:
-                    record.add_phone(phone)
+                    record.add_phone(phones)
             except Exception as error:
                 print(f"Phone cannot be added to record, {type(error)}, {error}, {json_dict}")
             try:
