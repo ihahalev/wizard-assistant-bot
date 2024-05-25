@@ -18,7 +18,7 @@ Version:
 import sys
 from remembrall.classes import Record
 from remembrall.helpers import book_operations
-from remembrall.helpers.data_upload import load_data, save_data, load_notebook_data, save_notebook_data
+from remembrall.helpers.data_upload import load_data, save_data
 from remembrall.helpers.greeting import farewell, greeting
 from remembrall.helpers.help_function import show_help
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory

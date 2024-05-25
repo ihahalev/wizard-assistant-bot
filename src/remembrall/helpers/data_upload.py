@@ -2,7 +2,7 @@ import pickle, json
 
 from .book_operations import get_all_contacts
 from .wrappers import file_read_error
-from ..classes import AddressBook, NoteBook
+from ..classes import AddressBook
 
 def save_data(book: AddressBook, filename="addressbook.pkl"):
     try:

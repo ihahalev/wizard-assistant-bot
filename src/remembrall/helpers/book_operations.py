@@ -261,9 +261,6 @@ def remove_note(args: list, book: NoteBook) -> str:
     If note is found, remove the note and return "Note removed."
     '''
     title = args[0]
-    note = book.find_note(title)
-    if not note:
-        return "Note not found."
     book.remove_note(title)
     return "Note removed."
 
@@ -295,21 +292,18 @@ def remove_note_tag(args: list, book: NoteBook) -> str:
     '''
     title, tag = args
     note = book.find_note(title)
-    if not note:
-        return "Note not found."
     note.remove_tag(tag)
     return "Tag removed"
 
 @note_error
-def sort_notes_by_tags(args: list, notebook: NoteBook) -> str:
+def sort_notes_by_tags(search_tags: list, notebook: NoteBook) -> str:
     '''Sort notes by tags. If no tags are given, return "Please give a tags."
     If notes are found, return all notes with the given tags in the format:
     "Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1
     Title: title2 | Tags: tag1, tag2 | Content: content2 | Date: date2"
     '''
-    if not args:
+    if not search_tags:
         return "Please give a tags."
-    search_tags = args
     notes = []
     for tag in search_tags:
         notes.extend(notebook.find_with_tag(tag)) 
@@ -317,19 +311,19 @@ def sort_notes_by_tags(args: list, notebook: NoteBook) -> str:
         return "No notes found with the given tags."
     notes = list(set(notes))
 
-    # Sort notes by the number of matching tags and the order of the tags in the search query
-    sorted_notes = sorted(notes, key=lambda note: (-len(set(note.tags) & set(search_tags)), [search_tags.index(tag) for tag in note.tags if tag in search_tags]))
+    # Sort notes by the number of matching tags, then by the total number of tags, and finally by the date
+    sorted_notes = sorted(notes, key=lambda note: (-len(set(note.tags) & set(search_tags)), -len(note.tags), note.date), reverse=True)
 
     return '\n'.join(str(note) for note in sorted_notes)
 
 @note_error
-def find_notes_with_content(args: list, notebook: NoteBook) -> str:
+def find_notes_with_content(search_str: str, notebook: NoteBook) -> str:
     '''Find notes with the given content. If no content is given, return "Please give a content."
     If notes are found, return all notes with the given content in the format:
-    "Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1'''
-    if not args:
+    "Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1"
+    '''
+    if not search_str:
         return "Please give a content."
-    search_str = args[0]
     notes = notebook.find_with_content(search_str)
     if not notes:
         return "No notes found with the given content."
