@@ -98,7 +98,7 @@ class Email(Field):
         super().__init__(email)
 
     @staticmethod
-    def validation(self, value):
+    def validation(value):
         pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
         search_email = re.search(pattern, value)
 
