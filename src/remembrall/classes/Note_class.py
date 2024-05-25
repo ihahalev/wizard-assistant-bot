@@ -1,19 +1,20 @@
-import datetime
+from datetime import datetime
 from collections import UserDict
 from .customErrors import NoteError
-
+from ..helpers.json_converter import to_json
+from ..helpers.constants import created_at_format
 
 class Note:
     def __init__(self, title: str, content: str):
         self.title = title
         self.content = content
         self.tags = list()
-        self.creation_date = datetime.datetime.now()
-    
+        self.created_at = datetime.now()
+
     def add_tag(self, tag):
         if tag not in self.tags:
             self.tags.append(tag)
-    
+
     def remove_tag(self, tag):
         if tag in self.tags:
             self.tags.remove(tag)
@@ -24,8 +25,35 @@ class Note:
         return ' '.join(self.tags).lower() if self.tags else ""
 
     def __str__(self) -> str:
-        return f"Title: {self.title:^2}| Tags: {', '.join(self.tags):>20} | Content: {self.content:<70} | Date: {self.creation_date.strftime('%d.%m.%Y.%H.%M')}"
+        return f"Title: {self.title:^2}| Content: {self.content:<70} | Tags: {', '.join(self.tags):>20} | Date: {self.created_at.strftime(created_at_format)}"
 
+    def to_json(self):
+        return to_json(self.__dict__)
+
+    @classmethod
+    def from_json(cls, json_dict: dict):
+        try:
+            title = json_dict['title']
+            content = json_dict['content']
+            note = cls(title, content)
+            try:
+                tags = json_dict['tags']
+                if type(tags) is list:
+                    for tag in tags:
+                        note.add_tag(tag)
+                else:
+                    note.add_tag(tags)
+            except Exception as error:
+                print(f"Tag cannot be added to note, {type(error)}, {error}, {json_dict}")
+            try:
+                created_at = json_dict['created_at']
+                note.created_at = datetime.strptime(created_at, created_at_format)
+            except Exception as error:
+                print(f"Creation date wrong format, creating new, {type(error)}, {error}, {json_dict}")
+                note.created_at = datetime.now()
+            return note
+        except Exception as error:
+            print(f"Note cannot be created, {type(error)}, {error}, {json_dict}")
 
 class NoteBook(UserDict):
     def add_note(self, note: Note):
@@ -57,8 +85,20 @@ class NoteBook(UserDict):
 
     def find_with_content(self, search_str: str) -> list[Note]:
         notes = self.data.values()
-        return [note for n in notes if search_str.lower() in n.content.lower()]
+        return [n for n in notes if search_str.lower() in n.content.lower()]
 
     def find_with_tag(self, search_tag: str) -> list[Note]:
         notes = self.data.values()
-        return [note for n in notes if search_tag.lower() in n.get_tags_as_str()]
+        return [n for n in notes if search_tag.lower() in n.get_tags_as_str()]
+
+    def to_json(self):
+        return to_json(self.data)
+
+    @classmethod
+    def from_json(cls, json_dict: dict):
+        book = cls()
+        for note_info in json_dict.values():
+            note = Note.from_json(note_info)
+            if note:
+                book.add_note(note)
+        return book

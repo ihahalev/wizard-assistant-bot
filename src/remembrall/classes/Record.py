@@ -90,7 +90,7 @@ class Record:
         if self.address:
             self.address = None
 
-# Serialization           
+# Serialization
     def __getstate__(self):
         attributes = self.__dict__
         return attributes
@@ -113,7 +113,7 @@ class Record:
                     for phone in phones:
                         record.add_phone(phone['value'])
                 else:
-                    record.add_phone(phone)
+                    record.add_phone(phones)
             except Exception as error:
                 print(f"Phone cannot be added to record, {type(error)}, {error}, {json_dict}")
             try:
@@ -130,6 +130,11 @@ class Record:
                 record.add_birthday(birthday)
             except Exception as error:
                 print(f"Birthday cannot be added to record, {type(error)}, {error}, {json_dict}")
+            try:
+                address = json_dict['address']['value']
+                record.add_address(address)
+            except Exception as error:
+                print(f"Address cannot be added to record, {type(error)}, {error}, {json_dict}")
             return record
         except Exception as error:
             print(f"Record cannot be created, {type(error)}, {error}, {json_dict}")

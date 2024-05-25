@@ -16,7 +16,7 @@ Version:
 """
 
 import sys
-from remembrall.classes import Record
+from remembrall.classes import Record, Note
 from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data
 from remembrall.helpers.greeting import farewell, greeting
@@ -29,28 +29,43 @@ def parse_input(user_input: str) -> tuple:
     cmd = cmd.strip().lower()
     return cmd, *args
 
-def main(test_users = None):
-    book = load_data()
-    load_test = len(sys.argv)>1 and sys.argv[1] =="test" and test_users and not book.data
+def main(test_users = None, test_notes = None):
+    book, note_book = load_data()
+    load_test = len(sys.argv)>1 and sys.argv[1] =="test"
     if load_test:
-        for user in test_users:
-            rec = Record(user['name'])
-            if user['phone']:
-                rec.add_phone(user['phone'])
-            if user['birthday']:
-                rec.add_birthday(user['birthday'])
-            if user['address']:
-                rec.add_address(user['address'])
-            book.add_record(rec)
-        print("Test data added")
+        if test_users and not book.data:
+            add = True
+            for user in test_users:
+                rec = Record(user['name'])
+                if user['phone']:
+                    rec.add_phone(user['phone'])
+                if user['birthday']:
+                    rec.add_birthday(user['birthday'])
+                if user['address']:
+                    rec.add_address(user['address'])
+                book.add_record(rec)
+        if test_notes and not note_book.data:
+            add = True
+            for note in test_notes:
+                rec = Note(note['title'], note['content'])
+                if note['tag']:
+                    rec.add_tag(note['tag'])
+                if note['created_at']:
+                    rec.created_at = note['created_at']
+                note_book.add_note(rec)
+        if add:
+            print("Test data added")
     greeting()
     while True:
         user_input = session.prompt("Enter a command: ", auto_suggest=AutoSuggestFromHistory(), complete_while_typing=False)
+        if not user_input:
+            print("No command provided")
+            continue
         command, *args = parse_input(user_input)
 
         match command:
             case "close" | "exit":
-                save_data(book)
+                save_data(book, note_book)
                 farewell()
                 break
             case "hello":
@@ -145,4 +160,9 @@ if __name__ == "__main__":
         {"name": "Jane", "phone": "3216549870", "birthday": "28.01.1990", "address": "654 Birch St"},
         {"name": "Smith", "phone": "0321654987", "birthday": "29.01.1990", "address": "321 Cedar St"}
     ]
-    main(users)
+    notes = [
+        {"title": "kedavra", "content": "hell know what words", "tag":"magic", "created_at": "21.01.2024.12.30"},
+        {"title": "procrustia", "content": "who can tell", "tag":"furute", "created_at": ""},
+        {"title": "purpurita", "content": "what the hell", "tag":"", "created_at": "21.01.2024.11.30"},
+    ]
+    main(users, notes)
