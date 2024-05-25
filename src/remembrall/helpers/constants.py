@@ -1,4 +1,11 @@
 format = "%d.%m.%Y"
+created_at_format = '%d.%m.%Y.%H.%M'
+
+storage_link = "src/storage"
+supported_files = {
+    "b": ".pkl",
+    "j": ".json"
+}
 
 commands = [['Command', 'Parameters', 'Description'],
                 ['all-contacts', '', 'list all information about contacts'],

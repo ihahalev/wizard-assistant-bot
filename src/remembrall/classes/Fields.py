@@ -72,6 +72,9 @@ class Birthday(Field):
                 raise DateFormatError("Invalid date format. Use DD.MM.YYYY")
             raise ValueError(err)
 
+    def edit_birthday(self, birthday:str):
+        self.__init__(birthday)
+
     def __str__(self):
         return datetime.strftime(self.value, format)
 
@@ -88,18 +91,14 @@ class Address(Field):
     def check_address(address: str):
         if len(address) < 2 or len(address) > 100:
             raise AddressValidationError("Address should be at least 2 chars and not more than 100 chars.")
-
-    def edit_birthday(self, value:str):
-        self.__init__(value)
     
 class Email(Field):
     def __init__(self, email: str):
-
-        self.validation(email)
-
+        Email.validation(email)
         super().__init__(email)
 
-    def validation(self, value):
+    @staticmethod
+    def validation(value):
         pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
         search_email = re.search(pattern, value)
 
