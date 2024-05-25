@@ -15,25 +15,36 @@ def input_error(func):
             pattern = r"got (\d)"
             got = re.search(pattern, msg)
             if got:
-                is_birthday = func.__name__ == "add_birthday"
+                is_birthday = func.__name__ == "add_birthday" or func.__name__ == "change_birthday"
                 is_address = func.__name__ == "change_address" or func.__name__ == "add_address"
+                is_email = func.__name__ == "change_email" or func.__name__ == "add_email"
                 count = got.group(1)
                 # depending on N return corresponding message
                 if count == '0':
                     if is_birthday:
                         return "Give me name and birthday please."
-                    return "Give me name and phone please."
+                    if is_address:
+                        return "Give me name and address please."
+                    if is_email:
+                        return "Give me name and email address please."
+                    return "Give me name and parameters please."                
                 elif count == '1':
                     if is_birthday:
                         return "Give me birthday please."
                     if is_address:
                         return "Give me address please."
-                    return "Give me phone please."
+                    if is_email:
+                        return "Give me email address please."                   
+                    return "Give me parameters please."
                 elif count == '2':
+                    if is_email:
+                        return "Give me new email address please."
                     return "Give me new phone please."
             # if we have only expected, too many entered args
             elif msg.find("expected") != -1:
                 return "Too many arguments."
+            elif func.__name__ == "get_birthdays":
+                return "Please give me a number."
             # any other unexpected ValueError
             return f"{func.__name__} error, {type(ve)}, {ve}"
         except KeyError:
@@ -42,6 +53,12 @@ def input_error(func):
             if func.__name__ in ['add_address', 'change_address']:
                 if len(args[0]) == 0:
                     return "Please give me name and address."
+            if func.__name__ in ['add_email', 'change_email']:
+                if len(args[0]) == 0:
+                    return "Please give me name and email address."
+            if func.__name__ in ['get_birthdays']:
+                if len(args[0]) == 0:
+                    return "Please give me a specified number of days."
             else:
                 return "Enter user name."
         except ShortName as name:
