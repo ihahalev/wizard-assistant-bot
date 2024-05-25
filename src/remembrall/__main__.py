@@ -32,9 +32,10 @@ def parse_input(user_input: str) -> tuple:
 def main(test_users = None, test_notes = None):
     book, note_book = load_data()
     load_test = len(sys.argv)>1 and sys.argv[1] =="test"
+    add_test = False
     if load_test:
         if test_users and not book.data:
-            add = True
+            add_test = True
             for user in test_users:
                 rec = Record(user['name'])
                 if user['phone']:
@@ -45,7 +46,7 @@ def main(test_users = None, test_notes = None):
                     rec.add_address(user['address'])
                 book.add_record(rec)
         if test_notes and not note_book.data:
-            add = True
+            add_test = True
             for note in test_notes:
                 rec = Note(note['title'], note['content'])
                 if note['tag']:
@@ -53,7 +54,7 @@ def main(test_users = None, test_notes = None):
                 if note['created_at']:
                     rec.created_at = note['created_at']
                 note_book.add_note(rec)
-        if add:
+        if add_test:
             print("Test data added")
     greeting()
     while True:
