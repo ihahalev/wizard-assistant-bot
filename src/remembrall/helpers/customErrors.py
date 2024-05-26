@@ -10,6 +10,9 @@ class DateFormatError(Exception):
 class EmailFormatError(Exception):
     pass
 
+class NoteError(Exception):
+    pass
+
 class EmailValidationError(Exception):
     pass
 

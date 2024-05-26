@@ -1,6 +1,6 @@
 import re
 
-from .customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError
+from .customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError, NoteError
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -82,4 +82,29 @@ def file_read_error(func):
             print(f"File {error.filename} not found.")
         except Exception as error:
             print(f"File could not be read, {type(error)}, {error}")
+    return inner
+
+def note_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except NoteError as ne:
+            return f"{ne}"
+        except IndexError:
+            if func.__name__ == 'change_note' and len(args[0]) < 2:
+                return "Please give a note title and new content text."
+            if func.__name__ in ['add_note', 'show_note', 'remove_note']:
+                if len(args[0]) == 0:
+                    return "Please give a note title."
+                return "Please give a content text."
+        except ValueError:
+            if func.__name__ == 'change_note_title' and len(args[0]) < 2:
+                return "Please give a note title and new title."
+            if func.__name__ == 'add_note_tag' and len(args[0]) < 2:
+                return "Please give a note title and tag."
+            if func.__name__ == 'remove_note_tag' and len(args[0]) < 2:
+                return "Please give a note title and tag."
+            return "Please give required arguments."
+        except Exception as error:
+            return f"{func.__name__} error, {type(error)}, {error}"
     return inner

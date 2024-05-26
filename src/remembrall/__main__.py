@@ -16,6 +16,7 @@ Version:
 """
 
 import sys
+from datetime import datetime
 from remembrall.classes import Record, Note
 from remembrall.helpers import book_operations
 from remembrall.helpers.data_upload import load_data, save_data
@@ -23,7 +24,8 @@ from remembrall.helpers.greeting import farewell, greeting
 from remembrall.helpers.help_function import show_help
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from remembrall.helpers.intellectual_analysis import session
-
+from remembrall.helpers.constants import created_at_format
+from colorama import Fore, Style
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
@@ -45,6 +47,8 @@ def main(test_users = None, test_notes = None):
                         rec.add_birthday(user['birthday'])
                     if user['address']:
                         rec.add_address(user['address'])
+                if user['email']:
+                    rec.add_email(user['email'])
                     book.add_record(rec)
             if test_notes and not note_book.data:
                 add_test = True
@@ -53,11 +57,14 @@ def main(test_users = None, test_notes = None):
                     if note['tag']:
                         rec.add_tag(note['tag'])
                     if note['created_at']:
-                        rec.created_at = note['created_at']
+                        rec.created_at = datetime.strptime(note['created_at'], created_at_format)
                     note_book.add_note(rec)
             if add_test:
                 print("Test data added")
         greeting()
+        print(Fore.BLUE + "Welcome to the Assistant bot for wizards of the academy!")
+        print('Type |help| to see all bot commands' + Style.RESET_ALL)
+
         while True:
             user_input = session.prompt("Enter a command: ", auto_suggest=AutoSuggestFromHistory(), complete_while_typing=False)
             if not user_input:
@@ -110,7 +117,7 @@ def main(test_users = None, test_notes = None):
                     print(book_operations.change_email(args, book))
                 case "remove-email":
                     # change contact email
-                    print(book_operations.remove_email(args, book))                
+                    print(book_operations.remove_email(args, book))
                 case "add-address":
                     # add contact address
                     print(book_operations.add_address(args, book))
@@ -160,17 +167,23 @@ def main(test_users = None, test_notes = None):
 
 
 if __name__ == "__main__":
+    
     users = [
-        {"name": "Doe", "phone": "", "birthday": "21.01.1985", "address": "123 Maple St"},
-        {"name": "John", "phone": "0987654321", "birthday": "", "address": "456 Elm St"},
-        {"name": "John Doe", "phone": "7894561230", "birthday": "23.01.1985", "address": "789 Oak St"},
-        {"name": "Jane Smith", "phone": "1234567890", "birthday": "27.01.1990", "address": "987 Pine St"},
-        {"name": "Jane", "phone": "3216549870", "birthday": "28.01.1990", "address": "654 Birch St"},
-        {"name": "Smith", "phone": "0321654987", "birthday": "29.01.1990", "address": "321 Cedar St"}
+    {"name": "Harry", "phone": "0201234567", "birthday": "31.07.1980", "address": "4 Privet Drive, Little Whinging", "email": "harry.potter@hogwarts.edu"},
+    {"name": "Hermione", "phone": "0202345678", "birthday": "19.09.1979", "address": "Hampstead Garden Suburb, London", "email": "hermione.granger@hogwarts.edu"},
+    {"name": "Ron", "phone": "0203456789", "birthday": "01.03.1980", "address": "The Burrow, Ottery St Catchpole", "email": "ron.weasley@hogwarts.edu"},
+    {"name": "Draco", "phone": "0204567890", "birthday": "05.06.1980", "address": "Malfoy Manor, Wiltshire", "email": "draco.malfoy@hogwarts.edu"},
+    {"name": "Luna", "phone": "0205678901", "birthday": "13.02.1981", "address": "The Rookery, Ottery St Catchpole", "email": "luna.lovegood@hogwarts.edu"},
+    {"name": "Neville", "phone": "0206789012", "birthday": "30.07.1980", "address": "Gran's House, London", "email": "neville.longbottom@hogwarts.edu"}
     ]
+
     notes = [
-        {"title": "kedavra", "content": "hell know what words", "tag":"magic", "created_at": "21.01.2024.12.30"},
-        {"title": "procrustia", "content": "who can tell", "tag":"furute", "created_at": ""},
-        {"title": "purpurita", "content": "what the hell", "tag":"", "created_at": "21.01.2024.11.30"},
+    {"title": "Avada", "content": "One of the Unforgivable Curses, causes instant death.", "tag": "DarkArts", "created_at": "21.01.2024.12.30"},
+    {"title": "Cruciatus", "content": "Inflicts unbearable pain on the victim.", "tag": "DarkArts,Torture", "created_at": "21.01.2024.12.00"},
+    {"title": "Imperius", "content": "Allows the caster to control the victim's actions.", "tag": "DarkArts,Control", "created_at": "21.01.2024.11.45"},
+    {"title": "Expelliarmus", "content": "Disarms an opponent, forcing them to release whatever they are holding.", "tag": "Defense,Disarm", "created_at": "21.01.2024.11.30"},
+    {"title": "Expecto", "content": "Summons a Patronus to ward off Dementors.", "tag": "Defense,Patronus", "created_at": "21.01.2024.11.15"},
+    {"title": "Alohomora", "content": "Unlocks doors and other locked objects.", "tag": "Charms,Unlocking", "created_at": "21.01.2024.11.00"}
     ]
+
     main(users, notes)
