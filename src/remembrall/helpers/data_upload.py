@@ -38,7 +38,7 @@ def save_json_data(book: AddressBook, note_book:NoteBook, filename: str):
     with open(filename, "w") as f:
         json.dump(books, f)
 
-def load_data(filename="wizard_assistant.pkl"):
+def load_data(filename="wizard_assistant.pkl", force=False):
     storage = Path.cwd()/storage_link
     if not storage.exists():
         print("No storage directory with data")
@@ -52,16 +52,20 @@ def load_data(filename="wizard_assistant.pkl"):
         note_book = NoteBook()
         return book, note_book
     file = storage/filename
-    file_type = input("Ohh, Mighty Wizard, From what spell load data (B - binary, J - JSON): ")
-    sufix = supported_files.get(file_type.lower())
-    match file_type.lower():
-        case "j":
-            books = fallback_loader(str(file.with_suffix(sufix)), str(file), load_json_data, load_binary_data)
-        case "b":
-            books = fallback_loader(str(file), str(file.with_suffix(sufix)), load_binary_data, load_json_data)
-        case _:
-            books = fallback_loader(str(file), str(file.with_suffix(supported_files['b'])), load_binary_data, load_json_data)
-    return books
+    if force:
+        books = fallback_loader(str(file), str(file.with_suffix(supported_files['b'])), load_binary_data, load_json_data)
+        return books
+    else:
+        file_type = input("Ohh, Mighty Wizard, From what spell load data (B - binary, J - JSON): ")
+        sufix = supported_files.get(file_type.lower())
+        match file_type.lower():
+            case "j":
+                books = fallback_loader(str(file.with_suffix(sufix)), str(file), load_json_data, load_binary_data)
+            case "b":
+                books = fallback_loader(str(file), str(file.with_suffix(sufix)), load_binary_data, load_json_data)
+            case _:
+                books = fallback_loader(str(file), str(file.with_suffix(supported_files['b'])), load_binary_data, load_json_data)
+        return books
 
 def fallback_loader(
         primary_file: str,
