@@ -151,7 +151,7 @@ def main(test_users = None, test_notes = None, force=False):
                 case "remove-tag":
                     # remove note tag
                     print(book_operations.remove_note_tag(args, note_book))
-                case "sotr-tags":
+                case "sort-tags":
                     # sort note by tags
                     print(book_operations.sort_notes_by_tags(args, note_book))
                 case "find-content":
