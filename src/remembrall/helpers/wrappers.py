@@ -1,6 +1,6 @@
 import re
 
-from .customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError, NoteError
+from .customErrors import ShortName, PhoneValidationError, DateFormatError, AddressValidationError, NoteError, EmailFormatError, EmailValidationError
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -70,6 +70,10 @@ def input_error(func):
             return f"{phone}"
         except DateFormatError as format:
             return f"{format}"
+        except EmailFormatError as emailFormat:
+            return f"{emailFormat}"
+        except EmailValidationError as emailValidation:
+            return f"{emailValidation}"
         except Exception as error:
             return f"{func.__name__} error, {type(error)}, {error}"
     return inner
