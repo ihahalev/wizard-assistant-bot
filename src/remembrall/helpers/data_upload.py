@@ -33,8 +33,10 @@ def save_binary_data(book: AddressBook, note_book:NoteBook, filename: str):
     with open(filename, "wb") as f:
         pickle.dump(books, f)
 
-def save_json_data(book: AddressBook, note_book:NoteBook, filename: str):
-    books =  {"records": book.to_json(), "notes": note_book.to_json()}
+def save_json_data(book: AddressBook | None, note_book:NoteBook | None, filename: str):
+    records = book.to_json() if book else None
+    notes = note_book.to_json() if note_book else None
+    books =  {"records": records, "notes": notes}
     with open(filename, "w") as f:
         json.dump(books, f)
 
