@@ -14,7 +14,7 @@ def save_data(book: AddressBook, note_book:NoteBook, filename="wizard_assistant.
         storage.mkdir(exist_ok=True, parents=True)
         file = storage/filename
         file_type = input("To what format save data (B - binary, J - JSON): ")
-        sufix = supported_files[file_type.lower()]
+        sufix = supported_files.get(file_type.lower())
         match file_type.lower():
             case "j":
                 save_json_data(book, note_book, str(file.with_suffix(sufix)))
@@ -50,14 +50,14 @@ def load_data(filename="wizard_assistant.pkl"):
         return book, note_book
     file = storage/filename
     file_type = input("From what format load data (B - binary, J - JSON): ")
-    sufix = supported_files[file_type.lower()]
+    sufix = supported_files.get(file_type.lower())
     match file_type.lower():
         case "j":
             books = fallback_loader(str(file.with_suffix(sufix)), str(file), load_json_data, load_binary_data)
         case "b":
             books = fallback_loader(str(file), str(file.with_suffix(sufix)), load_binary_data, load_json_data)
         case _:
-            books = fallback_loader(str(file), str(file.with_suffix(sufix)), load_binary_data, load_json_data)
+            books = fallback_loader(str(file), str(file.with_suffix(supported_files['b'])), load_binary_data, load_json_data)
     return books
 
 def fallback_loader(
