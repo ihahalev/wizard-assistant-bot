@@ -6,22 +6,25 @@ from .wrappers import file_read_error
 from ..classes import AddressBook, NoteBook
 from .constants import storage_link, supported_files
 
-def save_data(book: AddressBook, note_book:NoteBook, filename="wizard_assistant.pkl"):
+def save_data(book: AddressBook, note_book:NoteBook, filename="wizard_assistant.pkl", force=False):
     try:
         if not len(book):
             return
         storage = Path.cwd()/storage_link
         storage.mkdir(exist_ok=True, parents=True)
         file = storage/filename
-        file_type = input("To what format save data (B - binary, J - JSON): ")
+        file_type = input("Ohh, Mighty Wizard, To what spell save data (B - binary, J - JSON): ")
         sufix = supported_files.get(file_type.lower())
-        match file_type.lower():
-            case "j":
-                save_json_data(book, note_book, str(file.with_suffix(sufix)))
-            case "b":
-                save_binary_data(book, note_book, str(file))
-            case _:
-                save_binary_data(book, note_book, str(file))
+        if force:
+            save_binary_data(book, note_book, str(file))
+        else:
+            match file_type.lower():
+                case "j":
+                    save_json_data(book, note_book, str(file.with_suffix(sufix)))
+                case "b":
+                    save_binary_data(book, note_book, str(file))
+                case _:
+                    save_binary_data(book, note_book, str(file))
     except Exception as error:
         print(f"Error occured on create file, {type(error)}, {error}")
 
@@ -49,7 +52,7 @@ def load_data(filename="wizard_assistant.pkl"):
         note_book = NoteBook()
         return book, note_book
     file = storage/filename
-    file_type = input("From what format load data (B - binary, J - JSON): ")
+    file_type = input("Ohh, Mighty Wizard, From what spell load data (B - binary, J - JSON): ")
     sufix = supported_files.get(file_type.lower())
     match file_type.lower():
         case "j":
