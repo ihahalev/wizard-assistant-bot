@@ -191,9 +191,11 @@ class TestBookOperations(unittest.TestCase):
         sut.add_note_tag(["Title2", "tag2"], self.notes)
         sut.add_note_tag(["Title2", "tag1"], self.notes)
         result = sut.sort_notes_by_tags(["tag1"], self.notes)
-        lines = result.split("\n")
-        self.assertIn("Title1", lines[0])
-        self.assertIn("Title2", lines[1])
+        separator = "-" * 80 + "\n"
+        lines = result.split(separator)
+        self.assertEqual(len(lines), 4) # each note has separator
+        self.assertIn("Title1", lines[1])
+        self.assertIn("Title2", lines[3])
 
     def test_find_notes_with_content(self):
         result = sut.find_notes_with_content(["Text1"], self.notes)
