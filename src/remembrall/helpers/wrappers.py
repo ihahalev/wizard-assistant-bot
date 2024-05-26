@@ -13,7 +13,10 @@ def input_error(func):
             msg: str = ve.args[0]
             # if we have 'got', pattern of error will be like (expected 2, got N)
             pattern = r"got (\d)"
-            got = re.search(pattern, msg)
+            msg_str = type(msg) == str
+            got = ''
+            if msg_str:
+                got = re.search(pattern, msg)
             if got:
                 is_birthday = func.__name__ == "add_birthday" or func.__name__ == "change_birthday"
                 is_address = func.__name__ == "change_address" or func.__name__ == "add_address"
@@ -41,7 +44,7 @@ def input_error(func):
                         return "Give me new email address please."
                     return "Give me new phone please."
             # if we have only expected, too many entered args
-            elif msg.find("expected") != -1:
+            elif msg_str and msg.find("expected") != -1:
                 return "Too many arguments."
             elif func.__name__ == "get_birthdays":
                 return "Please give me a number."

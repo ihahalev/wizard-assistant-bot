@@ -43,13 +43,13 @@ class Note:
                         note.add_tag(tag)
                 else:
                     note.add_tag(tags)
-            except Exception as error:
-                print(f"Tag cannot be added to note, {type(error)}, {error}, {json_dict}")
+            except Exception:
+                pass
             try:
                 created_at = json_dict['created_at']
                 note.created_at = datetime.strptime(created_at, created_at_format)
             except Exception as error:
-                print(f"Creation date wrong format, creating new, {type(error)}, {error}, {json_dict}")
+                print(f"Creation date wrong format, creating new, {error}, {json_dict.get('created_at')}")
                 note.created_at = datetime.now()
             return note
         except Exception as error:

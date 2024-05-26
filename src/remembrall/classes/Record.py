@@ -1,6 +1,6 @@
 from .Fields import Name, Phone, Birthday, Address, Email
 
-from ..helpers.customErrors import PhoneValidationError, EmailValidationError
+from ..helpers.customErrors import PhoneValidationError, EmailValidationError, DateFormatError
 from ..helpers.wrappers import input_error
 from ..helpers.json_converter import to_json
 
@@ -70,6 +70,8 @@ class Record:
     def add_birthday(self, birthday):
         if not self.birthday:
             self.birthday = Birthday(birthday)
+        else:
+            raise DateFormatError("Birthday exists")
 
     def edit_birthday(self, birthday:str):
         if not self.birthday:
@@ -114,8 +116,8 @@ class Record:
                         record.add_phone(phone['value'])
                 else:
                     record.add_phone(phones)
-            except Exception as error:
-                print(f"Phone cannot be added to record, {type(error)}, {error}, {json_dict}")
+            except Exception:
+                pass
             try:
                 emails = json_dict['emails']
                 if type(emails) is list:
@@ -123,18 +125,18 @@ class Record:
                         record.add_email(email['value'])
                 else:
                     record.add_email(email)
-            except Exception as error:
-                print(f"Email address cannot be added to record, {type(error)}, {error}, {json_dict}")
+            except Exception:
+                pass
             try:
                 birthday = json_dict['birthday']['value']
                 record.add_birthday(birthday)
-            except Exception as error:
-                print(f"Birthday cannot be added to record, {type(error)}, {error}, {json_dict}")
+            except Exception:
+                pass
             try:
                 address = json_dict['address']['value']
                 record.add_address(address)
-            except Exception as error:
-                print(f"Address cannot be added to record, {type(error)}, {error}, {json_dict}")
+            except Exception:
+                pass
             return record
         except Exception as error:
             print(f"Record cannot be created, {type(error)}, {error}, {json_dict}")
