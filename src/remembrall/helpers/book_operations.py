@@ -259,7 +259,8 @@ def change_note(args: list, book: NoteBook) -> str:
     '''Change the text of a note. If note is not found, return "Note not found."
     If note is found, change the text and return "Note updated."
     '''
-    title, new_text = args
+    title = args[0]
+    new_text = ' '.join(args[1:])
     book.edit_note(title, new_text)
     return "Note updated."
 
@@ -320,19 +321,18 @@ def sort_notes_by_tags(search_tags: list, notebook: NoteBook) -> str:
     notes = list(set(notes))
 
     # Sort notes by the number of matching tags, then by the total number of tags, and finally by the date
-    sorted_notes = sorted(notes, key=lambda note: (-len(set(note.tags) & set(search_tags)), -len(note.tags), note.date), reverse=True)
+    sorted_notes = sorted(notes, key=lambda note: (-len(set(note.tags) & set(search_tags)), -len(note.tags), note.created_at), reverse=True)
 
     return '\n'.join(str(note) for note in sorted_notes)
 
 @note_error
-def find_notes_with_content(search_str: str, notebook: NoteBook) -> str:
+def find_notes_with_content(args: list, notebook: NoteBook) -> str:
     '''Find notes with the given content. If no content is given, return "Please give a content."
     If notes are found, return all notes with the given content in the format:
-    "Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1"
-    '''
-    if not search_str:
+    "Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1'''
+    if not args:
         return "Please give a content."
-    notes = notebook.find_with_content(search_str)
+    notes = notebook.find_with_content(args[0])
     if not notes:
         return "No notes found with the given content."
     return '\n'.join(str(note) for note in notes)

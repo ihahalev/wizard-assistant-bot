@@ -88,13 +88,13 @@ def note_error(func):
         except NoteError as ne:
             return f"{ne}"
         except IndexError:
+            if func.__name__ == 'change_note' and len(args[0]) < 2:
+                return "Please give a note title and new content text."
             if func.__name__ in ['add_note', 'show_note', 'remove_note']:
                 if len(args[0]) == 0:
                     return "Please give a note title."
                 return "Please give a content text."
         except ValueError:
-            if func.__name__ == 'change_note' and len(args[0]) < 2:
-                return "Please give a note title and new content text."
             if func.__name__ == 'change_note_title' and len(args[0]) < 2:
                 return "Please give a note title and new title."
             if func.__name__ == 'add_note_tag' and len(args[0]) < 2:
