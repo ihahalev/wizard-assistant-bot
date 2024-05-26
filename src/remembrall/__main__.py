@@ -31,9 +31,9 @@ def parse_input(user_input: str) -> tuple:
     cmd = cmd.strip().lower()
     return cmd, *args
 
-def main(test_users = None, test_notes = None):
+def main(test_users = None, test_notes = None, force=False):
     try:
-        book, note_book = load_data()
+        book, note_book = load_data(force)
         load_test = len(sys.argv)>1 and sys.argv[1] =="test"
         add_test = False
         if load_test:
@@ -163,7 +163,7 @@ def main(test_users = None, test_notes = None):
     except Exception as error:
         print(f"Unexpected error, {type(error)}, {error}")
         save_data(book, note_book, force=True)
-        main()
+        main(force=True)
 
 
 if __name__ == "__main__":
