@@ -47,9 +47,9 @@ def main(test_users = None, test_notes = None, force=False):
                         rec.add_birthday(user['birthday'])
                     if user['address']:
                         rec.add_address(user['address'])
-                if user['email']:
-                    rec.add_email(user['email'])
-                    book.add_record(rec)
+                    if user['email']:
+                        rec.add_email(user['email'])
+                        book.add_record(rec)
             if test_notes and not note_book.data:
                 add_test = True
                 for note in test_notes:
@@ -87,7 +87,7 @@ def main(test_users = None, test_notes = None, force=False):
                     print(book_operations.add_contact(args, book))
                 case "show-contact":
                     # show contact with all info
-                    pass
+                    print(book_operations.show_contact(args, book))
                 case "change-contact":
                     # change contact name
                     print(book_operations.change_contact(args, book))
