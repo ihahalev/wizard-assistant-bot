@@ -61,3 +61,13 @@ Or can be launched as
 ```bash
 python src/remembrall/__main__.py
 ```
+
+### Unit Tests
+
+VS Code is configured to use `unittest` and knows where the tests are (see `.vscode/settings.json`). You can run your tests by opening the Test Explorer (the beaker icon in the Activity Bar on the side), and then clicking on the `Run All Tests` button (the play button at the top of the Test Explorer).
+
+Alternatively, you can press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows) and start typing _Test: Run All Tests_.
+
+The results of the tests will appear in the Test Explorer. You can click on a test to see its output in the Output pane.
+
+To add a new tests simply add new file starting with `test_*.py` to `tests/` folder as per configured discovery mechanism. See [unittest](https://docs.python.org/3/library/unittest.html) Python Unit testing framework documentation.
