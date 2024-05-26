@@ -33,7 +33,7 @@ def parse_input(user_input: str) -> tuple:
 
 def main(test_users = None, test_notes = None, force=False):
     try:
-        book, note_book = load_data(force)
+        book, note_book = load_data(force=force)
         load_test = len(sys.argv)>1 and sys.argv[1] =="test"
         add_test = False
         if load_test:
