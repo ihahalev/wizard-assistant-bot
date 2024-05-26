@@ -113,13 +113,21 @@ def change_birthday(args: list, book: AddressBook) -> str:
 
 @input_error
 def get_birthdays(args: list, book: AddressBook) -> str:
+    if not args[0]:
+        return
     days = int(args[0])
     if not len(book):
         return "Address book is empty"
     birthdays = book.get_upcoming_birthdays(days)
     if not birthdays:
-        return "No upcoming birthdays"
-    output = "Upcoming birthdays:"
+        if days < 0:
+            return "No past birthdays"
+        else:
+            return "No upcoming birthdays"
+    if days < 0:
+        output = "Past birthdays:"
+    else:
+        output = "Upcoming birthdays:"
     for record in birthdays:
         output += f"\n{record}"
     return output
