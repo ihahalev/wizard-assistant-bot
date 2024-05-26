@@ -148,18 +148,20 @@ def main(test_users = None, test_notes = None, force=False):
                 case "add-tag":
                     # add note tag
                     print(book_operations.add_note_tag(args, book))
-                case "change-tag":
-                    # change note tag
-                    print(book_operations.change_note_tag(args, book))
                 case "remove-tag":
                     # remove note tag
                     print(book_operations.remove_note_tag(args, book))
-                    # show all comands
+                case "sotr-tags":
+                    # sort note by tags
+                    print(book_operations.sort_notes_by_tags(args, book))
+                case "find-content":
+                    # find notes by partial match with content
+                    print(book_operations.find_notes_with_content(args, book))
                 case "help":
+                    # show all comands
                     show_help()
                 case _:
                     print("Invalid command.")
-                    raise Exception
     except Exception as error:
         print(f"Unexpected error, {type(error)}, {error}")
         save_data(book, note_book, force=True)
@@ -169,21 +171,21 @@ def main(test_users = None, test_notes = None, force=False):
 if __name__ == "__main__":
     
     users = [
-    {"name": "Harry", "phone": "0201234567", "birthday": "31.07.1980", "address": "4 Privet Drive, Little Whinging", "email": "harry.potter@hogwarts.edu"},
-    {"name": "Hermione", "phone": "0202345678", "birthday": "19.09.1979", "address": "Hampstead Garden Suburb, London", "email": "hermione.granger@hogwarts.edu"},
-    {"name": "Ron", "phone": "0203456789", "birthday": "01.03.1980", "address": "The Burrow, Ottery St Catchpole", "email": "ron.weasley@hogwarts.edu"},
-    {"name": "Draco", "phone": "0204567890", "birthday": "05.06.1980", "address": "Malfoy Manor, Wiltshire", "email": "draco.malfoy@hogwarts.edu"},
-    {"name": "Luna", "phone": "0205678901", "birthday": "13.02.1981", "address": "The Rookery, Ottery St Catchpole", "email": "luna.lovegood@hogwarts.edu"},
-    {"name": "Neville", "phone": "0206789012", "birthday": "30.07.1980", "address": "Gran's House, London", "email": "neville.longbottom@hogwarts.edu"}
+        {"name": "Harry", "phone": "0201234567", "birthday": "31.07.1980", "address": "4 Privet Drive, Little Whinging", "email": "harry.potter@hogwarts.edu"},
+        {"name": "Hermione", "phone": "0202345678", "birthday": "19.09.1979", "address": "Hampstead Garden Suburb, London", "email": "hermione.granger@hogwarts.edu"},
+        {"name": "Ron", "phone": "0203456789", "birthday": "01.03.1980", "address": "The Burrow, Ottery St Catchpole", "email": "ron.weasley@hogwarts.edu"},
+        {"name": "Draco", "phone": "0204567890", "birthday": "05.06.1980", "address": "Malfoy Manor, Wiltshire", "email": "draco.malfoy@hogwarts.edu"},
+        {"name": "Luna", "phone": "0205678901", "birthday": "13.02.1981", "address": "The Rookery, Ottery St Catchpole", "email": "luna.lovegood@hogwarts.edu"},
+        {"name": "Neville", "phone": "0206789012", "birthday": "30.07.1980", "address": "Gran's House, London", "email": "neville.longbottom@hogwarts.edu"}
     ]
 
     notes = [
-    {"title": "Avada", "content": "One of the Unforgivable Curses, causes instant death.", "tag": "DarkArts", "created_at": "21.01.2024.12.30"},
-    {"title": "Cruciatus", "content": "Inflicts unbearable pain on the victim.", "tag": "DarkArts,Torture", "created_at": "21.01.2024.12.00"},
-    {"title": "Imperius", "content": "Allows the caster to control the victim's actions.", "tag": "DarkArts,Control", "created_at": "21.01.2024.11.45"},
-    {"title": "Expelliarmus", "content": "Disarms an opponent, forcing them to release whatever they are holding.", "tag": "Defense,Disarm", "created_at": "21.01.2024.11.30"},
-    {"title": "Expecto", "content": "Summons a Patronus to ward off Dementors.", "tag": "Defense,Patronus", "created_at": "21.01.2024.11.15"},
-    {"title": "Alohomora", "content": "Unlocks doors and other locked objects.", "tag": "Charms,Unlocking", "created_at": "21.01.2024.11.00"}
+        {"title": "Avada", "content": "One of the Unforgivable Curses, causes instant death.", "tag": "DarkArts", "created_at": "21.01.2024.12.30"},
+        {"title": "Cruciatus", "content": "Inflicts unbearable pain on the victim.", "tag": "DarkArts,Torture", "created_at": "21.01.2024.12.00"},
+        {"title": "Imperius", "content": "Allows the caster to control the victim's actions.", "tag": "DarkArts,Control", "created_at": "21.01.2024.11.45"},
+        {"title": "Expelliarmus", "content": "Disarms an opponent, forcing them to release whatever they are holding.", "tag": "Defense,Disarm", "created_at": "21.01.2024.11.30"},
+        {"title": "Expecto", "content": "Summons a Patronus to ward off Dementors.", "tag": "Defense,Patronus", "created_at": "21.01.2024.11.15"},
+        {"title": "Alohomora", "content": "Unlocks doors and other locked objects.", "tag": "Charms,Unlocking", "created_at": "21.01.2024.11.00"}
     ]
 
     main(users, notes)
