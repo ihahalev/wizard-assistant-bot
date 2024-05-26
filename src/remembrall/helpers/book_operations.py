@@ -129,7 +129,7 @@ def get_birthdays(args: list, book: AddressBook) -> str:
     else:
         output = "Upcoming birthdays:"
     for record in birthdays:
-        output += f"\n{record}"
+        output += f"\n{record["name"]}'s birthday is {record["congratulation_date"]}, he is {record["years_old"]} years old"
     return output
 
 @input_error
