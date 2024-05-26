@@ -25,7 +25,7 @@ from remembrall.helpers.help_function import show_help
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from remembrall.helpers.intellectual_analysis import session
 from remembrall.helpers.constants import created_at_format
-
+from colorama import Fore, Style
 def parse_input(user_input: str) -> tuple:
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
@@ -59,6 +59,9 @@ def main(test_users = None, test_notes = None):
         if add_test:
             print("Test data added")
     greeting()
+    print(Fore.BLUE + "Welcome to the Assistant bot for wizards of the academy!")
+    print('Type |help| to see all bot commands' + Style.RESET_ALL)
+    
     while True:
         user_input = session.prompt("Enter a command: ", auto_suggest=AutoSuggestFromHistory(), complete_while_typing=False)
         if not user_input:
@@ -154,6 +157,7 @@ def main(test_users = None, test_notes = None):
             case "help":
                 show_help()
             case _:
+
                 print("Invalid command.")
 
 if __name__ == "__main__":
