@@ -25,7 +25,8 @@ class Note:
         return ' '.join(self.tags).lower() if self.tags else ""
 
     def __str__(self) -> str:
-        return f"Title: {self.title:<20}| Content: {self.content:<80} | Tags: {', '.join(self.tags):<20} | Date: {self.created_at.strftime(created_at_format)}"
+        separator = "-" * 80
+        return f"{separator}\nTitle: {self.title}\nContent: {self.content}\nTags: {', '.join(self.tags)}\nDate: {self.created_at.strftime(created_at_format)}\n{separator}"
 
     def to_json(self):
         return to_json(self.__dict__)
