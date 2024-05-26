@@ -13,6 +13,7 @@ class TestBookOperations(unittest.TestCase):
         self.record2 = sut.Record("Ivan")
         self.record2.add_phone("9876543210")
         self.record2.add_birthday("28.02.1988")
+        self.record2.add_email("ivan@example.com")
         self.book.add_record(self.record1)
         self.book.add_record(self.record2)
 
@@ -61,9 +62,13 @@ class TestBookOperations(unittest.TestCase):
         result = sut.get_all_contacts(self.book)
         self.assertEqual(result,
                         "Address book:\n" \
-                        "Contact name: Dmytro, phones: 1234567890, birthday: \n" \
-                        "Contact name: Ivan, phones: 9876543210, birthday: 28.02.1988"
+                        "Contact name: Dmytro, phones: 1234567890, birthday: , address: , emails: \n" \
+                        "Contact name: Ivan, phones: 9876543210, birthday: 28.02.1988, address: , emails: ivan@example.com"
                         )
+
+    def test_show_contact(self):
+        result = sut.show_contact(["Ivan"], self.book)
+        self.assertEqual(result, "Contact name: Ivan, phones: 9876543210, birthday: 28.02.1988, address: , emails: ivan@example.com")
 
     def test_add_birthday(self):
         args = ["Dmytro", "01.04.1990"]
@@ -83,31 +88,37 @@ class TestBookOperations(unittest.TestCase):
     def test_get_birthdays(self):
         # set Dmytro's birthday to 2 days from now
         today = datetime.today()
-
-        weekday = today.weekday()
-        # make sure birthday is not on weekend for this test
-        if weekday in [4,5]: # move to Monday
-            birthday = today + timedelta(days=7-weekday)
-        else: # move to next day
-            birthday = today + timedelta(days=1)
-
+        birthday = today + timedelta(days=2)
+        years_old = today.year - 1995
         args = ["Dmytro", f"{birthday.day}.{birthday.month}.1995"]
         sut.add_birthday(args, self.book)
 
         result = sut.get_birthdays([7], self.book)
         self.assertEqual(result,
                          "Upcoming birthdays:\n" \
-                         f"{{'name': 'Dmytro', 'congratulation_date': '{birthday.strftime("%d.%m.%Y")}'}}"
+                         f"Dmytro's birthday is {birthday.strftime("%d.%m.%Y")}, he is {years_old} years old"
                          )
 
     def test_add_email(self):
-        pass
+        result = sut.add_email(["Dmytro", "dmytro@example.com"], self.book)
+        self.assertEqual(result, "Email added")
+        self.assertIn("dmytro@example.com", [str(email) for email in self.record1.emails])
 
     def test_change_email(self):
-        pass
+        result = sut.change_email(["Ivan", "ivan@example.com", "ivan.new@test.com" ], self.book)
+        self.assertEqual(result, "Email changed")
+        self.assertNotIn("ivan@example.com", [str(email) for email in self.record2.emails])
+        self.assertIn("ivan.new@test.com", [str(email) for email in self.record2.emails])
 
     def test_add_address(self):
-        pass
+        result = sut.add_address(["Dmytro", "Kyiv Ukraine"], self.book)
+        self.assertEqual(result, "Address added.")
+        self.assertEqual(str(self.record1.address), "Kyiv Ukraine")
+
+    def test_add_address_already_exists(self):
+        sut.add_address(["Dmytro", "Kyiv Ukraine"], self.book)
+        result = sut.add_address(["Dmytro", "Kyiv Ukraine Earth"], self.book)
+        self.assertEqual(result, "Address already exists.")
 
     def test_change_address(self):
         pass
