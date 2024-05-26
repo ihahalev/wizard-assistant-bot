@@ -228,8 +228,7 @@ def add_note(args: list, notebook: NoteBook) -> str:
     '''Add a note to the notebook. If note with the same title exists, return 
     "Note with this title exists." If note is added, return "Note added."
     '''
-    title = args[0]
-    text = ' '.join(args[1:])
+    title, *text = args
     note = Note(title, text)
     notebook.add_note(note)
     return "Note added."
@@ -251,8 +250,7 @@ def change_note(args: list, book: NoteBook) -> str:
     '''Change the text of a note. If note is not found, return "Note not found."
     If note is found, change the text and return "Note updated."
     '''
-    title = args[0]
-    new_text = ' '.join(args[1:])
+    title, *new_text = args
     book.edit_note(title, new_text)
     return "Note updated."
 
@@ -324,8 +322,7 @@ def find_notes_with_content(args: list, notebook: NoteBook) -> str:
     "Title: title1 | Tags: tag1, tag2 | Content: content1 | Date: date1'''
     if not args:
         return "Please give a content."
-    search_str = args[0]
-    notes = notebook.find_with_content(search_str)
+    notes = notebook.find_with_content(args[0])
     if not notes:
         return "No notes found with the given content."
     return '\n'.join(str(note) for note in notes)
