@@ -17,6 +17,12 @@ class TestBookOperations(unittest.TestCase):
         self.book.add_record(self.record1)
         self.book.add_record(self.record2)
 
+        self.notes = sut.NoteBook()
+        self.note1 = sut.Note("Title1", "Text1")
+        self.note2 = sut.Note("Title2", "Text2")
+        self.notes.add_note(self.note1)
+        self.notes.add_note(self.note2)
+
     def test_add_contact(self):
         args = ["Artem", "5555555555"]
         sut.add_contact(args, self.book)
@@ -121,31 +127,80 @@ class TestBookOperations(unittest.TestCase):
         self.assertEqual(result, "Address already exists.")
 
     def test_change_address(self):
-        pass
+        sut.add_address(["Dmytro", "Kyiv Ukraine"], self.book)
+        result = sut.change_address(["Dmytro", "Kyiv Ukraine Earth"], self.book)
+        self.assertEqual(result, "Address changed.")
+        self.assertEqual(str(self.record1.address), "Kyiv Ukraine Earth")
 
+    def test_remove_address(self):
+        sut.add_address(["Dmytro", "Kyiv Ukraine"], self.book)
+        result = sut.remove_address(["Dmytro"], self.book)
+        self.assertEqual(result, "Address deleted.")
+        self.assertIsNone(self.record1.address)    
+    
+    def test_get_all_notes(self):
+        result = sut.get_all_notes(self.notes)
+        self.assertIn("Title1", result)
+        self.assertIn("Text1", result)
+        self.assertIn("Title2", result)
+        self.assertIn("Text2", result)
+    
     def test_add_note(self):
-        pass
+        result = sut.add_note(["Title3", "Text3"], self.notes)
+        self.assertEqual(result, "Note added.")
+        self.assertIn("Title3", [note.title for note in self.notes.data.values()])
 
     def test_show_note(self):
-        pass
+        result = sut.show_note(["Title1"], self.notes)
+        self.assertIn("Title: Title1", result)
+        self.assertIn("Content: Text1", result)
+        self.assertIn("Tags:", result)
+        self.assertIn("Date: ", result)
 
     def test_change_note(self):
-        pass
+        result = sut.change_note(["Title1", "New text"], self.notes)
+        self.assertEqual(result, "Note updated.")
+        self.assertEqual(self.notes.data["Title1"].content, "New text")
 
     def test_remove_note(self):
-        pass
+        result = sut.remove_note(["Title2"], self.notes)
+        self.assertEqual(result, "Note removed.")
 
     def test_change_note_title(self):
-        pass
+        result = sut.change_note_title(["Title1", "Title4"], self.notes)
+        self.assertEqual(result, "Note title changed.")
+        self.assertIn("Title4", [note.title for note in self.notes.data.values()])
 
     def test_add_note_tag(self):
-        pass
+        result = sut.add_note_tag(["Title1", "tag1"], self.notes)
+        self.assertEqual(result, "Tag added")
+        self.assertIn("tag1", self.notes.data["Title1"].tags)
 
-    def test_change_note_tag(self):
-        pass
+    def test_remove_note_tag_nothing_to_remove(self):
+        result = sut.remove_note_tag(["Title1", "non_existing"], self.notes)
+        self.assertEqual(result, "No Tag to remove")
 
     def test_remove_note_tag(self):
-        pass
+        sut.add_note_tag(["Title1", "tag1"], self.notes)
+        result = sut.remove_note_tag(["Title1", "tag1"], self.notes)
+        self.assertEqual(result, "Tag removed")
+        self.assertNotIn("tag1", self.notes.data["Title1"].tags)
+
+    def test_sort_notes_by_tags(self):
+        sut.add_note_tag(["Title1", "tag1"], self.notes)
+        sut.add_note_tag(["Title2", "tag2"], self.notes)
+        sut.add_note_tag(["Title2", "tag1"], self.notes)
+        result = sut.sort_notes_by_tags(["tag1"], self.notes)
+        lines = result.split("\n")
+        self.assertIn("Title1", lines[0])
+        self.assertIn("Title2", lines[1])
+
+    def test_find_notes_with_content(self):
+        result = sut.find_notes_with_content(["Text1"], self.notes)
+        self.assertIn("Title1", result)
+        self.assertIn("Text1", result)
+        self.assertNotIn("Title2", result)
+        self.assertNotIn("Text2", result)
 
 if __name__ == '__main__':
     unittest.main()
