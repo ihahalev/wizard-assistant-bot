@@ -35,11 +35,13 @@ class AddressBook(UserDict):
 
         for rec in self.data.values():
             birth_date = rec.birthday.value if rec.birthday else None
-            for day in range(x, y):
-                b_day_on_this_day = datetime(year=(today+timedelta(days=day)).year, month=birth_date.month, day=birth_date.day).date()
-                years_old = b_day_on_this_day.year - birth_date.year
-                if (day == (b_day_on_this_day - today).days and years_old >= 0):      
-                    b_users.append({"name": rec.name.value, "congratulation_date": b_day_on_this_day.strftime(format), "years_old": years_old})
+            if birth_date != None:
+                for day in range(x, y):
+                    
+                    b_day_on_this_day = datetime(year=(today+timedelta(days=day)).year, month=birth_date.month, day=birth_date.day).date()
+                    years_old = b_day_on_this_day.year - birth_date.year
+                    if (day == (b_day_on_this_day - today).days and years_old >= 0):      
+                        b_users.append({"name": rec.name.value, "congratulation_date": b_day_on_this_day.strftime(format), "years_old": years_old})
         return b_users
 
     def __getstate__(self):
