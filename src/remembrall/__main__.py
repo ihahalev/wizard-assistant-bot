@@ -12,7 +12,7 @@ List the avaialble commands:
 Version:
 --------
 
-- wizards-remembrall v1.0.0
+- wizards-remembrall v1.1.0
 """
 
 import sys
