@@ -42,5 +42,4 @@ twine==5.1.0
 typing_extensions==4.11.0
 urllib3==2.2.1
 wcwidth==0.2.13
--e git+https://github.com/ihahalev/wizard-assistant-bot.git@2f826c23c9b12e1ee39c8ed6da09f44127f83a75#egg=wizards_remembrall
 zipp==3.18.2
